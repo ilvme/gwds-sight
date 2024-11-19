@@ -4,7 +4,11 @@ import { RouterView } from 'vue-router'
 
 <template>
   <n-config-provider>
-    <RouterView />
+    <n-notification-provider>
+      <n-message-provider>
+        <RouterView />
+      </n-message-provider>
+    </n-notification-provider>
   </n-config-provider>
 </template>
 

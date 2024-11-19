@@ -2,6 +2,7 @@
 import { ref, onMounted, toRaw } from 'vue'
 import * as monaco from 'monaco-editor'
 import { format } from 'sql-formatter'
+import { CaretRightOutlined } from '@vicons/antd'
 
 defineOptions({ name: 'SQLEditor' })
 
@@ -21,7 +22,7 @@ onMounted(async () => {
     lineHeight: 1.6,
     mouseWheelZoom: true,
     language: 'sql',
-    value: `SELECT * FROM user WHERE id = 1 and username like '%kangjia%' ORDER BY age DESC;`,
+    value: `-- 查询 user 表数据 \nSELECT * FROM user WHERE id = 1 and username like '%kangjia%' ORDER BY age DESC;`,
     contextmenu: true,
   })
 
@@ -41,7 +42,10 @@ onMounted(async () => {
 <template>
   <main style="margin-left: 10px; margin-right: 10px">
     <n-flex style="margin-bottom: 5px">
-      <n-button size="tiny" type="primary">执行选中 F8</n-button>
+      <n-button size="tiny" type="primary">
+        执行 F8
+        <n-icon size="14" style="margin-left: 8px"> <CaretRightOutlined /> </n-icon>
+      </n-button>
       <n-button size="tiny" secondary type="primary">执行所有 F9</n-button>
       <n-button size="tiny" secondary type="primary" @click="formatSQL"> 格式化 </n-button>
       <n-button size="tiny" secondary> 保存为 SQL 模板 </n-button>

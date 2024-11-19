@@ -1,7 +1,8 @@
 <script setup>
 import { ref, h } from 'vue'
-import { NIcon } from 'naive-ui'
-import { DatabaseFilled, FolderFilled } from '@vicons/antd'
+import { NIcon, useMessage } from 'naive-ui'
+import { DatabaseFilled, FolderFilled, SafetyCertificateFilled } from '@vicons/antd'
+import { RefreshOutlined } from '@vicons/material'
 
 const data = ref([
   {
@@ -28,7 +29,14 @@ const data = ref([
             default: () => h(FolderFilled),
           }),
       },
-      { key: '1-3', label: '用户与权限' },
+      {
+        key: '1-3',
+        label: '用户与权限',
+        prefix: () =>
+          h(NIcon, null, {
+            default: () => h(SafetyCertificateFilled),
+          }),
+      },
       { key: '1-4', label: '会话信息' },
       { key: '1-5', label: '系统信息' },
     ],
@@ -45,10 +53,19 @@ const data = ref([
     ],
   },
 ])
+const message = useMessage()
+function refreshTree() {
+  message.info('刷新树')
+}
 </script>
 
 <template>
-  <n-input placeholder="快速搜索" />
+  <n-flex style="padding: 5px 10px" align="center" justify="space-between">
+    <n-input size="small" placeholder="快速搜索" style="width: 200px" />
+    <n-button circle quaternary @click="refreshTree">
+      <n-icon size="20"><RefreshOutlined /></n-icon>
+    </n-button>
+  </n-flex>
 
   <n-tree :data="data" expand-on-click block-line />
 </template>
