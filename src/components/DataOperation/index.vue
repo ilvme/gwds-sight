@@ -42,10 +42,10 @@ const columns = ref([
   <div>
     <!-- 操作栏 -->
     <n-flex size="small" align="center">
-      <n-flex :size="5">
+      <n-flex :size="5" align="center">
         <n-popover trigger="hover" :delay="500" placement="bottom">
           <template #trigger>
-            <n-icon size="20" style="width: 20px; height: 20px; cursor: pointer">
+            <n-icon size="22" class="btn">
               <KeyboardDoubleArrowLeftFilled />
             </n-icon>
           </template>
@@ -53,9 +53,7 @@ const columns = ref([
         </n-popover>
         <n-popover trigger="hover" :delay="500" placement="bottom">
           <template #trigger>
-            <n-button circle quaternary>
-              <n-icon size="20"><KeyboardArrowLeftFilled /></n-icon>
-            </n-button>
+            <n-icon size="22" class="btn"><KeyboardArrowLeftFilled /></n-icon>
           </template>
           上一页
         </n-popover>
@@ -78,17 +76,13 @@ const columns = ref([
         </n-popover>
         <n-popover trigger="hover" :delay="500" placement="bottom">
           <template #trigger>
-            <n-button circle quaternary>
-              <n-icon size="20"><KeyboardArrowRightRound /></n-icon>
-            </n-button>
+            <n-icon size="22" class="btn"><KeyboardArrowRightRound /></n-icon>
           </template>
           下一页
         </n-popover>
         <n-popover trigger="hover" :delay="500" placement="bottom">
           <template #trigger>
-            <n-button circle quaternary>
-              <n-icon size="20"><KeyboardDoubleArrowRightOutlined /></n-icon>
-            </n-button>
+            <n-icon size="22" class="btn"><KeyboardDoubleArrowRightOutlined /></n-icon>
           </template>
           最后一页
         </n-popover>
@@ -163,4 +157,16 @@ const columns = ref([
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.btn {
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.btn:hover {
+  background-color: #f3f2f2;
+}
+</style>
