@@ -1,26 +1,26 @@
 <script setup>
+import { ref } from 'vue'
 import { NIcon, useMessage } from 'naive-ui'
 import { RefreshOutlined } from '@vicons/material'
-import { treeData } from '@/mock/table.js'
+import { treeData, treeRightClickMappings } from '@/utils/table.js'
 
 const data = ref(treeData)
 const message = useMessage()
 function refreshTree() {
   message.info('刷新树')
 }
+const currentClickNode = ref(null)
 
 const showDropdown = ref(false)
-const options = ref([
-  { label: '创建数据源', key: '1' },
-  { label: '创建数据库', key: '2' },
-  { key: '11', type: 'divider' },
-  { label: '创建表', key: '3' },
-])
+
+// 根据右键的 key 不同需返回不同的菜单
+const rightOptions = ref([])
 const xRef = ref(0)
 const yRef = ref(0)
 
 const handleSelect = (key) => {
   message.success(key)
+  console.log(currentClickNode.value)
   showDropdown.value = false
 }
 const handleClickOutside = () => {
@@ -29,9 +29,20 @@ const handleClickOutside = () => {
 const nodeProps = ({ option }) => {
   return {
     onClick() {
+      currentClickNode.value = option
       message.info(`[Click] ${option.label}`)
     },
     onContextmenu(e) {
+      currentClickNode.value = option
+      if (option.key.startsWith('1-')) {
+        rightOptions.value = treeRightClickMappings.DATASOURCE
+      } else {
+        rightOptions.value = [
+          { label: '查看', key: 'COMMON_SHOW' },
+          { key: '11', type: 'divider' },
+          { label: '刷新', key: 'COMMON_REFRESH' },
+        ]
+      }
       showDropdown.value = true
       xRef.value = e.clientX
       yRef.value = e.clientY
@@ -58,7 +69,7 @@ const nodeProps = ({ option }) => {
         trigger="manual"
         placement="bottom-start"
         :show="showDropdown"
-        :options="options"
+        :options="rightOptions"
         :x="xRef"
         :y="yRef"
         @select="handleSelect"
