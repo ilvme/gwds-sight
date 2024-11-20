@@ -28,10 +28,13 @@ const columns = ref([
 
       <sql />
     </n-tab-pane>
+
     <n-tab-pane tab="创建表[mysql@1.2.3.09]" key="2" name="2"> 创建表 </n-tab-pane>
+
     <n-tab-pane tab="t_address[gbase@localhost]" key="3" name="3">
       <DataOperation />
     </n-tab-pane>
+
     <n-tab-pane tab="t_user[gbase@localhost]" key="4" name="4">
       表数据查看与操作
       <n-data-table size="small" :columns="columns" :data="data" :bordered="false" />

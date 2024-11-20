@@ -59,18 +59,20 @@ const columns = ref([
         </n-popover>
         <n-popover trigger="hover" :delay="500" placement="bottom">
           <template #trigger>
-            <n-dropdown
-              placement="bottom"
-              trigger="click"
-              size="small"
-              :options="options"
-              @select="handleChangePageSize"
-            >
-              <n-flex size="small" align="center" style="cursor: pointer">
-                <span>{{ pageSize + '行' }}</span>
-                <n-icon><KeyboardArrowDownRound /></n-icon>
-              </n-flex>
-            </n-dropdown>
+            <div>
+              <n-dropdown
+                placement="bottom"
+                trigger="click"
+                size="small"
+                :options="options"
+                @select="handleChangePageSize"
+              >
+                <n-flex size="small" align="center" style="cursor: pointer">
+                  <span>{{ pageSize + '行' }}</span>
+                  <n-icon><KeyboardArrowDownRound /></n-icon>
+                </n-flex>
+              </n-dropdown>
+            </div>
           </template>
           更改每页行数
         </n-popover>
@@ -89,41 +91,33 @@ const columns = ref([
       </n-flex>
       <n-popover trigger="hover" :delay="500" placement="bottom">
         <template #trigger>
-          <n-button circle quaternary>
-            <n-icon size="20"><RefreshOutlined /></n-icon>
-          </n-button>
+          <n-icon size="22" class="btn"><RefreshOutlined /></n-icon>
         </template>
         重新加载数据
       </n-popover>
       <n-divider vertical />
       <n-popover trigger="hover" :delay="500" placement="bottom">
         <template #trigger>
-          <n-button circle quaternary>
-            <n-icon size="20"><PlusOutlined /></n-icon>
-          </n-button>
+          <n-icon size="22" class="btn"><PlusOutlined /></n-icon>
         </template>
         添加行
       </n-popover>
       <n-popover trigger="hover" :delay="500" placement="bottom">
         <template #trigger>
-          <n-button circle quaternary>
-            <n-icon size="20"><MinusOutlined /></n-icon>
-          </n-button>
+          <n-icon size="22" class="btn"><MinusOutlined /></n-icon>
         </template>
         删除行
       </n-popover>
       <n-popover trigger="hover" :delay="500" placement="bottom">
         <template #trigger>
-          <n-button circle quaternary>
-            <n-icon size="20"><ArrowCircleUpFilled /></n-icon>
-          </n-button>
+          <n-icon size="22" class="btn"><ArrowCircleUpFilled /></n-icon>
         </template>
         提交
       </n-popover>
     </n-flex>
 
     <!-- 搜索条件栏 -->
-    <n-flex>
+    <n-flex style="margin-top: 5px">
       <n-flex size="small">
         WHERE
         <n-auto-complete
@@ -153,7 +147,14 @@ const columns = ref([
     </n-flex>
 
     <!-- 数据区域 -->
-    <n-data-table size="small" :columns="columns" :data="data" :bordered="false" />
+    <n-data-table
+      v-if="data.length > 0"
+      size="small"
+      :columns="columns"
+      :data="data"
+      :bordered="false"
+    />
+    <n-empty v-else description="没有任何数据" />
   </div>
 </template>
 
