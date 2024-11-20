@@ -2,8 +2,9 @@
 import { ref } from 'vue'
 import sql from '@/views/sql.vue'
 import DataOperation from '@/components/DataOperation/index.vue'
+import TableCreate from '@/views/table-create.vue'
 
-const key = ref('1')
+const key = ref('2')
 
 const data = ref([])
 const columns = ref([
@@ -14,6 +15,10 @@ const columns = ref([
 </script>
 <template>
   <n-tabs size="small" v-model:value="key" type="card" default-value="1" closable>
+    <n-tab-pane tab="创建表[mysql@1.2.3.09]" key="2" name="2">
+      <TableCreate />
+    </n-tab-pane>
+
     <n-tab-pane key="1" name="1">
       <template #tab>
         <n-popover trigger="hover" :delay="500">
@@ -28,8 +33,6 @@ const columns = ref([
 
       <sql />
     </n-tab-pane>
-
-    <n-tab-pane tab="创建表[mysql@1.2.3.09]" key="2" name="2"> 创建表 </n-tab-pane>
 
     <n-tab-pane tab="t_address[gbase@localhost]" key="3" name="3">
       <DataOperation />
