@@ -1,76 +1,9 @@
 <script setup>
-import { ref, h } from 'vue'
 import { NIcon, useMessage } from 'naive-ui'
-import { DatabaseFilled, FolderFilled, SafetyCertificateFilled } from '@vicons/antd'
 import { RefreshOutlined } from '@vicons/material'
+import { treeData } from '@/mock/table.js'
 
-const data = ref([
-  {
-    key: '1',
-    label: 'mysql@1.2.3.09',
-    prefix: () =>
-      h(NIcon, null, {
-        default: () => h(DatabaseFilled),
-      }),
-    children: [
-      {
-        key: '1-1',
-        label: '系统数据库',
-        prefix: () =>
-          h(NIcon, null, {
-            default: () => h(FolderFilled),
-          }),
-        children: [
-          {
-            key: '1-1-1',
-            label: 'information_schema',
-            prefix: () =>
-              h(NIcon, null, {
-                default: () => h(DatabaseFilled),
-              }),
-          },
-          {
-            key: '1-1-2',
-            label: 'performance_schema',
-            prefix: () =>
-              h(NIcon, null, {
-                default: () => h(DatabaseFilled),
-              }),
-          },
-        ],
-      },
-      {
-        key: '1-2',
-        label: '用户数据库',
-        prefix: () =>
-          h(NIcon, null, {
-            default: () => h(FolderFilled),
-          }),
-      },
-      {
-        key: '1-3',
-        label: '用户与权限',
-        prefix: () =>
-          h(NIcon, null, {
-            default: () => h(SafetyCertificateFilled),
-          }),
-      },
-      { key: '1-4', label: '会话信息' },
-      { key: '1-5', label: '系统信息' },
-    ],
-  },
-  {
-    key: '2',
-    label: 'gbase@localhost',
-    children: [
-      { key: '2-1', label: '系统数据库' },
-      { key: '2-2', label: '用户数据库' },
-      { key: '2-3', label: '用户与权限' },
-      { key: '2-4', label: '会话信息' },
-      { key: '2-5', label: '系统信息' },
-    ],
-  },
-])
+const data = ref(treeData)
 const message = useMessage()
 function refreshTree() {
   message.info('刷新树')
@@ -110,7 +43,7 @@ const nodeProps = ({ option }) => {
 </script>
 
 <template>
-  <aside>
+  <aside style="display: flex; flex-direction: column; height: calc(100vh - 50px)">
     <n-flex style="padding: 5px 10px" align="center" justify="space-between">
       <n-input size="small" placeholder="快速搜索" style="width: 200px" />
       <n-button circle quaternary @click="refreshTree">
@@ -118,19 +51,38 @@ const nodeProps = ({ option }) => {
       </n-button>
     </n-flex>
 
-    <n-tree block-line :data="data" :node-props="nodeProps" />
-    <n-dropdown
-      size="small"
-      trigger="manual"
-      placement="bottom-start"
-      :show="showDropdown"
-      :options="options"
-      :x="xRef"
-      :y="yRef"
-      @select="handleSelect"
-      @clickoutside="handleClickOutside"
-    />
+    <n-scrollbar trigger="none" x-scrollable style="padding-right: 10px; padding-bottom: 10px">
+      <n-tree block-line :data="data" :node-props="nodeProps" class="tree" />
+      <n-dropdown
+        size="small"
+        trigger="manual"
+        placement="bottom-start"
+        :show="showDropdown"
+        :options="options"
+        :x="xRef"
+        :y="yRef"
+        @select="handleSelect"
+        @clickoutside="handleClickOutside"
+      />
+    </n-scrollbar>
   </aside>
 </template>
 
-<style scoped></style>
+<style scoped>
+.tree {
+  flex: 1;
+  width: 100%;
+
+  overflow-x: auto;
+}
+
+:deep (.n-tree .n-tree-node-content) {
+  padding: 0;
+}
+:deep(.n-tree .n-tree-node-wrapper) {
+  padding: 1px 0;
+}
+:deep(.n-tree .n-tree-node-content .n-tree-node-content__prefix) {
+  margin-right: 5px;
+}
+</style>
