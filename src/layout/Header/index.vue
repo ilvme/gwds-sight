@@ -12,9 +12,10 @@ function renderIcon(icon) {
   }
 }
 const options1 = [
-  { label: '首选项', key: 'marina bay sands', icon: renderIcon(SettingFilled) },
+  { label: '首选项', key: '1', icon: renderIcon(SettingFilled) },
+  { label: '新窗口打开', key: '2' },
   { type: 'divider' },
-  { label: '退出', key: "brown's hotel, london", icon: renderIcon(LogoutOutlined) },
+  { label: '退出', key: 'logout', icon: renderIcon(LogoutOutlined) },
 ]
 
 const options2 = [
@@ -24,12 +25,12 @@ const options2 = [
 
 const options3 = [
   { label: 'SQL 模板', key: 'marina bay sands' },
-  { label: '我的 SQL', key: "brown's hotel, london" },
+  { label: '我的 SQL', key: "brown's hostel, london" },
   { label: '导入导出', key: 'atlantis nahamas, nassau', icon: renderIcon(CloudUploadOutlined) },
 ]
 
 const options4 = [
-  { label: '关于', key: "brown's hotel, london" },
+  { label: '关于', key: "brown's hos dtel, london" },
   { label: '帮助', key: 'marina bay sands', icon: renderIcon(HelpFilled) },
   { type: 'divider' },
   { label: '快捷键', key: 'atlantis nahamas, nassau' },
