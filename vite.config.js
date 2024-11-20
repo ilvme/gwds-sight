@@ -7,13 +7,7 @@ import AutoImport from 'unplugin-auto-import/vite'
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [
-    vue(),
-    vueDevTools(),
-    AutoImport({
-      imports: ['vue', 'vue-router'],
-    }),
-  ],
+  plugins: [vue(), vueDevTools(), AutoImport({})],
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
