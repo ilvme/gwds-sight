@@ -1,8 +1,9 @@
 <script setup>
-import { h } from 'vue'
+import { h, useTemplateRef } from 'vue'
 import { NIcon } from 'naive-ui'
 import { SettingFilled, LogoutOutlined, FileAddOutlined, CloudUploadOutlined } from '@vicons/antd'
 import { HelpFilled } from '@vicons/material'
+import Preferences from '@/views/preferences/index.vue'
 
 function renderIcon(icon) {
   return () => {
@@ -12,7 +13,7 @@ function renderIcon(icon) {
   }
 }
 const options1 = [
-  { label: '首选项', key: '1', icon: renderIcon(SettingFilled) },
+  { label: '首选项', key: 'preferences', icon: renderIcon(SettingFilled) },
   { label: '新窗口打开', key: '2' },
   { type: 'divider' },
   { label: '退出', key: 'logout', icon: renderIcon(LogoutOutlined) },
@@ -35,8 +36,13 @@ const options4 = [
   { type: 'divider' },
   { label: '快捷键', key: 'atlantis nahamas, nassau' },
 ]
+
+const preferencesRef = useTemplateRef('preferencesRef')
 function handleSelect(key) {
   console.log(key)
+  if (key === 'preferences') {
+    preferencesRef.value.openModal()
+  }
 }
 </script>
 
@@ -58,6 +64,9 @@ function handleSelect(key) {
         帮助
       </n-dropdown>
     </nav>
+
+    <!-- 首选项弹窗 -->
+    <Preferences ref="preferencesRef" />
   </header>
 </template>
 

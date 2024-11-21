@@ -1,5 +1,6 @@
 <script setup>
 import SQLEditor from '@/components/SQLEditor/index.vue'
+import { ref } from 'vue'
 const data = ref([])
 const columns = ref([
   { title: 'Name', key: 'name' },
