@@ -26,10 +26,10 @@ defineExpose({ openModal })
       <n-tab-pane tab="高级设置" name="4">高级设置</n-tab-pane>
     </n-tabs>
     <template #action>
-      <n-space justify="end" size="small">
-        <n-button size="small" type="primary" @click="hiddenModal">确定</n-button>
-        <n-button size="small" @click="hiddenModal">取消</n-button>
-        <n-button size="small" @click="hiddenModal">应用</n-button>
+      <n-space justify="center">
+        <n-button type="primary" @click="hiddenModal">确定</n-button>
+        <n-button @click="hiddenModal">取消</n-button>
+        <n-button @click="hiddenModal">应用</n-button>
       </n-space>
     </template>
   </n-modal>

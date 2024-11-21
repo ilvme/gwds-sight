@@ -30,10 +30,10 @@ defineExpose({ openModal })
         <n-tab-pane tab="常规" name="1">
           <n-flex justify="space-between">
             <n-form-item label="主机"><n-input style="width: 360px" /> </n-form-item>
-            <n-form-item label="端口"><n-input /> </n-form-item>
+            <n-form-item label="端口"><n-input style="width: 200px" value="5258" /> </n-form-item>
           </n-flex>
 
-          <n-form-item label="用户名"><n-input /> </n-form-item>
+          <n-form-item label="用户名"><n-input style="width: 360px" /> </n-form-item>
           <n-flex justify="space-between">
             <n-form-item label="密码">
               <n-input style="width: 360px" type="password" />
@@ -61,10 +61,10 @@ defineExpose({ openModal })
     </n-form>
 
     <template #action>
-      <n-space justify="end" size="small">
-        <n-button size="small" type="primary" @click="hiddenModal">确定</n-button>
-        <n-button size="small" @click="hiddenModal">取消</n-button>
-        <n-button size="small" type="info" @click="hiddenModal">测试连接</n-button>
+      <n-space justify="center">
+        <n-button type="primary" @click="hiddenModal">确定</n-button>
+        <n-button @click="hiddenModal">取消</n-button>
+        <n-button type="success" @click="hiddenModal">测试连接</n-button>
       </n-space>
     </template>
   </n-modal>
