@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, toRaw, onBeforeUnmount } from 'vue'
+import { ref, onMounted, toRaw } from 'vue'
 import * as monaco from 'monaco-editor'
 import EditorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker'
 import { language } from 'monaco-editor/esm/vs/basic-languages/sql/sql'
@@ -87,9 +87,10 @@ onMounted(async () => {
     },
   })
 
-  await editor.value.addAction({
+  editor.value.addAction({
     id: 'sql-formatter',
     label: 'SQL 格式化',
+    keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyL],
     contextMenuGroupId: 'navigation',
     contextMenuOrder: 1.5,
     precondition: null,
@@ -97,9 +98,18 @@ onMounted(async () => {
       formatSQL()
     },
   })
+  editor.value.addAction({
+    id: 'sql-execute',
+    label: '执行选中',
+    keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.F8],
+    contextMenuGroupId: 'navigation1',
+    contextMenuOrder: 1.5,
+    precondition: null,
+    run() {
+      formatSQL()
+    },
+  })
 })
-
-onBeforeUnmount(() => toRaw(editor)?.dispose())
 </script>
 
 <template>
