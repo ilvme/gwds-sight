@@ -15,7 +15,7 @@ const columns = ref([
       <SQLEditor />
     </template>
     <template #2>
-      <n-tabs default-value="1">
+      <n-tabs default-value="1" style="padding-left: 10px">
         <n-tab-pane name="1" tab="执行信息"><p>> 执行 1 条 SQL, 耗时 34 毫秒。</p> </n-tab-pane>
         <n-tab-pane name="2" tab="t_user">
           <n-data-table size="small" :columns="columns" :data="data" :bordered="false" />

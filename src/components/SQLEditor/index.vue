@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, toRaw } from 'vue'
+import { ref, onMounted, toRaw, onBeforeUnmount } from 'vue'
 import * as monaco from 'monaco-editor'
 import EditorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker'
 import { language } from 'monaco-editor/esm/vs/basic-languages/sql/sql'
@@ -99,7 +99,7 @@ onMounted(async () => {
   })
 })
 
-// onBeforeUnmount(() => editor.value?.dispose())
+onBeforeUnmount(() => toRaw(editor)?.dispose())
 </script>
 
 <template>
