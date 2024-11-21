@@ -2,6 +2,7 @@ import './assets/main.css'
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
+import '@/utils/monaco.js'
 
 import naive from 'naive-ui'
 

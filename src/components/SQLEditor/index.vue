@@ -1,6 +1,7 @@
 <script setup>
-import { ref, onMounted, toRaw } from 'vue'
+import { ref, onMounted, toRaw, onBeforeUnmount } from 'vue'
 import * as monaco from 'monaco-editor'
+import { language } from 'monaco-editor/esm/vs/basic-languages/sql/sql.js'
 import { format } from 'sql-formatter'
 import { CaretRightOutlined } from '@vicons/antd'
 
@@ -12,10 +13,58 @@ function formatSQL() {
 }
 const editor = ref(null)
 onMounted(async () => {
+  // 注册SQL关键字提示
+  // 这个是自定义的表字段数据
+  const fieldsArr = [
+    {
+      type: 'Field', // 这个类型是为了区分是关键字还是字段，具体可以看下文档
+      value: 'name',
+    },
+    {
+      type: 'Field',
+      value: 'age',
+    },
+    {
+      type: 'Field',
+      value: 'sex',
+    },
+  ]
+
+  monaco.languages.registerCompletionItemProvider('sql', {
+    provideCompletionItems: (model, position) => {
+      let suggestions = []
+      // 再把内置的关键字数据处理下
+      const temp = language.keywords.map((item) => {
+        return {
+          type: 'Keyword',
+          value: item,
+        }
+      })
+      // 把关键字和表字段数据合到一起，这样就不用输入快捷键才会显示表字段了
+      const result = [...fieldsArr, ...temp]
+      result.map((item) => {
+        suggestions.push({
+          label: item.value,
+          kind: monaco.languages.CompletionItemKind[item.type],
+          insertText: item.value + ' ',
+          detail: item.type === 'Keyword' ? '内置关键字' : '表字段',
+          // range,
+        })
+      })
+      return {
+        suggestions,
+      }
+    },
+  })
+
   editor.value = await monaco.editor.create(document.getElementById('editor_container'), {
     // 此处的配置项几乎与 VSCode 中的一致
     automaticLayout: true,
     // scrollBeyondLastLine: true,
+    minimap: {
+      // 关闭小地图
+      enabled: false,
+    },
     tabSize: 2,
     fontSize: 14,
     cursorBlinking: 'smooth',
@@ -24,6 +73,19 @@ onMounted(async () => {
     language: 'sql',
     value: `-- 查询 user 表数据 \nSELECT * FROM user WHERE id = 1 and username like '%kangjia%' ORDER BY age DESC;`,
     contextmenu: true,
+    scrollbar: {
+      // Subtle shadows to the left & top. Defaults to true.
+      useShadows: false,
+
+      // Render vertical arrows. Defaults to false.
+      verticalHasArrows: false,
+      // Render horizontal arrows. Defaults to false.
+      horizontalHasArrows: false,
+
+      verticalScrollbarSize: 8,
+      horizontalScrollbarSize: 8,
+      arrowSize: 0,
+    },
   })
 
   await editor.value.addAction({
@@ -31,12 +93,14 @@ onMounted(async () => {
     label: 'SQL 格式化',
     contextMenuGroupId: 'navigation',
     contextMenuOrder: 1.5,
-    precondition: 'editorLangId === sql',
+    precondition: null,
     run() {
       formatSQL()
     },
   })
 })
+
+onBeforeUnmount(() => editor.value?.dispose())
 </script>
 
 <template>

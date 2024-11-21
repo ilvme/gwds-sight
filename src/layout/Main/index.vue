@@ -4,7 +4,7 @@ import sql from '@/views/sql.vue'
 import DataOperation from '@/components/DataOperation/index.vue'
 import TableCreate from '@/views/table-create.vue'
 
-const key = ref('2')
+const key = ref('1')
 
 const data = ref([])
 const columns = ref([
