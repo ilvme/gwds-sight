@@ -87,7 +87,7 @@ const nodeProps = ({ option }) => {
   overflow-x: auto;
 }
 
-:deep (.n-tree .n-tree-node-content) {
+:deep(.n-tree .n-tree-node-content) {
   padding: 0;
 }
 :deep(.n-tree .n-tree-node-wrapper) {

@@ -1,11 +1,18 @@
 <script setup>
-import { ref, onMounted, toRaw, onBeforeUnmount } from 'vue'
+import { ref, onMounted, toRaw } from 'vue'
 import * as monaco from 'monaco-editor'
-import { language } from 'monaco-editor/esm/vs/basic-languages/sql/sql.js'
+import EditorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker'
+import { language } from 'monaco-editor/esm/vs/basic-languages/sql/sql'
 import { format } from 'sql-formatter'
 import { CaretRightOutlined } from '@vicons/antd'
 
 defineOptions({ name: 'SQLEditor' })
+
+self.MonacoEnvironment = {
+  getWorker() {
+    return new EditorWorker()
+  },
+}
 
 function formatSQL() {
   let oldContent = toRaw(editor.value).getValue()
@@ -16,18 +23,10 @@ onMounted(async () => {
   // 注册SQL关键字提示
   // 这个是自定义的表字段数据
   const fieldsArr = [
-    {
-      type: 'Field', // 这个类型是为了区分是关键字还是字段，具体可以看下文档
-      value: 'name',
-    },
-    {
-      type: 'Field',
-      value: 'age',
-    },
-    {
-      type: 'Field',
-      value: 'sex',
-    },
+    // type 区分关键字和字段
+    { type: 'Field', value: 'name' },
+    { type: 'Field', value: 'age' },
+    { type: 'Field', value: 'sex' },
   ]
 
   monaco.languages.registerCompletionItemProvider('sql', {
@@ -100,7 +99,7 @@ onMounted(async () => {
   })
 })
 
-onBeforeUnmount(() => editor.value?.dispose())
+// onBeforeUnmount(() => editor.value?.dispose())
 </script>
 
 <template>
