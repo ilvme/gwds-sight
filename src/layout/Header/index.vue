@@ -1,9 +1,10 @@
 <script setup>
 import { h, useTemplateRef } from 'vue'
-import { NIcon } from 'naive-ui'
+import { NIcon, useMessage } from 'naive-ui'
 import { SettingFilled, LogoutOutlined, FileAddOutlined, CloudUploadOutlined } from '@vicons/antd'
 import { HelpFilled } from '@vicons/material'
 import Preferences from '@/views/preferences/index.vue'
+import DatasourceCreator from '@/views/datasource/create.vue'
 
 function renderIcon(icon) {
   return () => {
@@ -20,7 +21,7 @@ const options1 = [
 ]
 
 const options2 = [
-  { label: '新建数据源', key: 'atlantis nahamas, nassau', icon: renderIcon(FileAddOutlined) },
+  { label: '新建数据源', key: 'datasource-create', icon: renderIcon(FileAddOutlined) },
   { label: '驱动管理', key: 'the beverly hills hotel, los angeles' },
 ]
 
@@ -36,12 +37,20 @@ const options4 = [
   { type: 'divider' },
   { label: '快捷键', key: 'atlantis nahamas, nassau' },
 ]
-
+const message = useMessage()
 const preferencesRef = useTemplateRef('preferencesRef')
+const datasourceCreatorRef = useTemplateRef('datasourceCreatorRef')
 function handleSelect(key) {
   console.log(key)
-  if (key === 'preferences') {
-    preferencesRef.value.openModal()
+  switch (key) {
+    case 'preferences':
+      preferencesRef.value.openModal()
+      break
+    case 'datasource-create':
+      datasourceCreatorRef.value.openModal()
+      break
+    default:
+      message.success('你惦记了' + key)
   }
 }
 </script>
@@ -67,6 +76,9 @@ function handleSelect(key) {
 
     <!-- 首选项弹窗 -->
     <Preferences ref="preferencesRef" />
+
+    <!-- 创建数据源 -->
+    <DatasourceCreator ref="datasourceCreatorRef" />
   </header>
 </template>
 
