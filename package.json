@@ -11,6 +11,7 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "crypto-js": "^4.2.0",
     "monaco-editor": "^0.52.0",
     "pinia": "^2.2.6",
     "sql-formatter": "^15.4.6",

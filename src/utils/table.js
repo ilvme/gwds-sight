@@ -1,4 +1,4 @@
-import { h } from 'vue'
+import { h, useId } from 'vue'
 import { NIcon } from 'naive-ui'
 import { DatabaseFilled, FolderFilled, SafetyCertificateFilled } from '@vicons/antd'
 import { TableRowsRound, TableChartOutlined } from '@vicons/material'
@@ -9,6 +9,13 @@ const icon = (name, prop = null) =>
   h(NIcon, prop, {
     default: () => h(name),
   })
+const tList = []
+const buildTableList = (count) => {
+  for (let i = 0; i < count; i++) {
+    tList.push({ key: crypto.randomUUID(), label: randC(), prefix: () => icon(TableChartOutlined) })
+  }
+  return tList
+}
 
 export const treeData = [
   {
@@ -43,31 +50,7 @@ export const treeData = [
                   { key: randC(), label: 't_user', prefix: () => icon(TableChartOutlined) },
                   { key: randC(), label: 't_system', prefix: () => icon(TableChartOutlined) },
                   { key: randC(), label: randC(), prefix: () => icon(TableChartOutlined) },
-                  { key: randC(), label: randC(), prefix: () => icon(TableChartOutlined) },
-                  { key: randC(), label: randC(), prefix: () => icon(TableChartOutlined) },
-                  { key: randC(), label: randC(), prefix: () => icon(TableChartOutlined) },
-                  { key: randC(), label: randC(), prefix: () => icon(TableChartOutlined) },
-                  { key: randC(), label: randC(), prefix: () => icon(TableChartOutlined) },
-                  { key: randC(), label: randC(), prefix: () => icon(TableChartOutlined) },
-                  { key: randC(), label: randC(), prefix: () => icon(TableChartOutlined) },
-                  { key: randC(), label: randC(), prefix: () => icon(TableChartOutlined) },
-                  { key: randC(), label: randC(), prefix: () => icon(TableChartOutlined) },
-                  { key: randC(), label: randC(), prefix: () => icon(TableChartOutlined) },
-                  { key: randC(), label: randC(), prefix: () => icon(TableChartOutlined) },
-                  { key: randC(), label: randC(), prefix: () => icon(TableChartOutlined) },
-                  { key: randC(), label: randC(), prefix: () => icon(TableChartOutlined) },
-                  { key: randC(), label: randC(), prefix: () => icon(TableChartOutlined) },
-                  { key: randC(), label: randC(), prefix: () => icon(TableChartOutlined) },
-                  { key: randC(), label: randC(), prefix: () => icon(TableChartOutlined) },
-                  { key: randC(), label: randC(), prefix: () => icon(TableChartOutlined) },
-                  { key: randC(), label: randC(), prefix: () => icon(TableChartOutlined) },
-                  { key: randC(), label: randC(), prefix: () => icon(TableChartOutlined) },
-                  { key: randC(), label: randC(), prefix: () => icon(TableChartOutlined) },
-                  { key: randC(), label: randC(), prefix: () => icon(TableChartOutlined) },
-                  { key: randC(), label: randC(), prefix: () => icon(TableChartOutlined) },
-                  { key: randC(), label: randC(), prefix: () => icon(TableChartOutlined) },
-                  { key: randC(), label: randC(), prefix: () => icon(TableChartOutlined) },
-                  { key: randC(), label: randC(), prefix: () => icon(TableChartOutlined) },
+                  ...buildTableList(1000),
                 ],
               },
               {
