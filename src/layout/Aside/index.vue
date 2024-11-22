@@ -63,7 +63,7 @@ const nodeProps = ({ option }) => {
     </n-flex>
 
     <n-scrollbar trigger="none" x-scrollable style="padding-right: 10px; padding-bottom: 10px">
-      <n-tree block-line :data="data" :node-props="nodeProps" class="tree" />
+      <n-tree virtual-scroll block-line :data="data" :node-props="nodeProps" class="tree" />
       <n-dropdown
         size="small"
         trigger="manual"
