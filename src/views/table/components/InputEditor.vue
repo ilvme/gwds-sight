@@ -24,7 +24,7 @@ function handleChange() {
 </script>
 
 <template>
-  <div v-if="!isEdit" style="min-height: 22px" @dblclick="handleOnClick">
+  <div v-if="!isEdit" style="min-height: 22px" @click="handleOnClick">
     {{ props.value }}
   </div>
 
