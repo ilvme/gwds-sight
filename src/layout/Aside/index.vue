@@ -1,8 +1,9 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, useTemplateRef } from 'vue'
 import { NIcon, useMessage } from 'naive-ui'
 import { RefreshOutlined } from '@vicons/material'
 import { treeData, treeRightClickMappings } from '@/utils/table.js'
+import TableCreatorAndEditor from '@/views/table/create.vue'
 
 const data = ref(treeData)
 const message = useMessage()
@@ -18,9 +19,13 @@ const rightOptions = ref([])
 const xRef = ref(0)
 const yRef = ref(0)
 
+const tableCreatorAndEditorRef = useTemplateRef('tableCreatorAndEditorRef')
 const handleSelect = (key) => {
   message.success(key)
   console.log(currentClickNode.value)
+  if (key === 'TABLE_CREATE') {
+    tableCreatorAndEditorRef.value.openModal()
+  }
   showDropdown.value = false
 }
 const handleClickOutside = () => {
@@ -38,6 +43,7 @@ const nodeProps = ({ option }) => {
         rightOptions.value = treeRightClickMappings.DATASOURCE
       } else {
         rightOptions.value = [
+          { label: '创建表', key: 'TABLE_CREATE' },
           { label: '查看', key: 'COMMON_SHOW' },
           { key: '11', type: 'divider' },
           { label: '刷新', key: 'COMMON_REFRESH' },
@@ -76,6 +82,8 @@ const nodeProps = ({ option }) => {
         @clickoutside="handleClickOutside"
       />
     </n-scrollbar>
+
+    <TableCreatorAndEditor ref="tableCreatorAndEditorRef" />
   </aside>
 </template>
 

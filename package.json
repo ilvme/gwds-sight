@@ -11,8 +11,12 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@vueuse/components": "^11.3.0",
+    "@vueuse/core": "^11.3.0",
     "crypto-js": "^4.2.0",
+    "lodash-es": "^4.17.21",
     "monaco-editor": "^0.52.0",
+    "nanoid": "^5.0.8",
     "pinia": "^2.2.6",
     "sql-formatter": "^15.4.6",
     "vue": "^3.5.12",
