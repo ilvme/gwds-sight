@@ -1,9 +1,9 @@
-import { h, useId } from 'vue'
+import { h } from 'vue'
 import { NIcon } from 'naive-ui'
 import { DatabaseFilled, FolderFilled, SafetyCertificateFilled } from '@vicons/antd'
 import { TableRowsRound, TableChartOutlined } from '@vicons/material'
-import { randC } from '@/utils/common.js'
 import { TREE_RIGHT_CLICK_MENUS } from '@/utils/rightClick.js'
+import { nanoid } from 'nanoid'
 
 const icon = (name, prop = null) =>
   h(NIcon, prop, {
@@ -12,7 +12,11 @@ const icon = (name, prop = null) =>
 const tList = []
 const buildTableList = (count) => {
   for (let i = 0; i < count; i++) {
-    tList.push({ key: crypto.randomUUID(), label: randC(), prefix: () => icon(TableChartOutlined) })
+    tList.push({
+      key: crypto.randomUUID(),
+      label: nanoid(18),
+      prefix: () => icon(TableChartOutlined),
+    })
   }
   return tList
 }
@@ -46,12 +50,7 @@ export const treeData = [
                   h(NIcon, null, {
                     default: () => h(FolderFilled),
                   }),
-                children: [
-                  { key: randC(), label: 't_user', prefix: () => icon(TableChartOutlined) },
-                  { key: randC(), label: 't_system', prefix: () => icon(TableChartOutlined) },
-                  { key: randC(), label: randC(), prefix: () => icon(TableChartOutlined) },
-                  ...buildTableList(1000),
-                ],
+                children: buildTableList(10000),
               },
               {
                 key: '4-1-1-2',
@@ -60,6 +59,7 @@ export const treeData = [
                   h(NIcon, null, {
                     default: () => h(FolderFilled),
                   }),
+                children: buildTableList(10000),
               },
             ],
           },
