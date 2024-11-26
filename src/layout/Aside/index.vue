@@ -134,7 +134,7 @@ const nodeProps = ({ option }) => {
 
 :deep(.n-tree .n-tree-node.n-tree-node--highlight .n-tree-node-content .n-tree-node-content__text) {
   //font-weight: bold;
-  color: red;
+  background-color: #ffffd2;
 }
 
 :deep(

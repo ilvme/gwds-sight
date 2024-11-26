@@ -13,8 +13,8 @@ const tList = []
 const buildTableList = (count) => {
   for (let i = 0; i < count; i++) {
     tList.push({
-      key: crypto.randomUUID(),
-      label: nanoid(18),
+      key: nanoid(),
+      label: nanoid(),
       prefix: () => icon(TableChartOutlined),
     })
   }
