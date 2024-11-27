@@ -1,22 +1,16 @@
-import { h } from 'vue'
-import { NIcon } from 'naive-ui'
 import { DatabaseFilled, FolderFilled, SafetyCertificateFilled } from '@vicons/antd'
 import { TableRowsRound, TableChartOutlined } from '@vicons/material'
 import { TREE_RIGHT_CLICK_MENUS } from '@/utils/rightClick.js'
 import { nanoid } from 'nanoid'
 import { renderIcon } from '@/utils/icon.js'
 
-const icon = (name, prop = null) =>
-  h(NIcon, prop, {
-    default: () => h(name),
-  })
 const tList = []
 const buildTableList = (count) => {
   for (let i = 0; i < count; i++) {
     tList.push({
       key: nanoid(),
       label: nanoid(),
-      prefix: () => icon(TableChartOutlined),
+      prefix: renderIcon(TableChartOutlined),
     })
   }
   return tList
