@@ -3,8 +3,9 @@ import { useTabStore } from '@/stores/tab.js'
 import { storeToRefs } from 'pinia'
 import { computed } from 'vue'
 import Welcome from '@/views/Welcome.vue'
+import { Toast } from '@/utils/Layer.js'
+import { MoreOutlined } from '@vicons/antd'
 
-// const key = ref('1')
 const tabStore = useTabStore()
 
 const { tabList, activeTab } = storeToRefs(tabStore)
@@ -14,6 +15,17 @@ const closable = computed(() => tabList.value.length > 0)
 // 标签关闭事件
 function handleTabClose(name) {
   tabStore.removeTab(name)
+}
+
+const rightOptions = [{ label: '关闭所有', key: 'close-all' }]
+function handleSelect(key) {
+  switch (key) {
+    case 'close-all':
+      tabList.value = []
+      break
+    default:
+      Toast.success(key)
+  }
 }
 </script>
 <template>
@@ -45,8 +57,19 @@ function handleTabClose(name) {
             <p>URL：jdbc:mysql//1.2.3.09:3306</p>
           </n-popover>
         </template>
+
+        <!-- 组件 -->
         <component :is="tab.component" :key="tab.name" />
       </n-tab-pane>
+
+      <!-- 标签栏后缀，一些统一操作按钮 -->
+      <template #suffix>
+        <n-dropdown trigger="click" :options="rightOptions" @select="handleSelect">
+          <n-icon size="20" style="margin-right: 12px; cursor: pointer">
+            <MoreOutlined />
+          </n-icon>
+        </n-dropdown>
+      </template>
     </n-tabs>
   </main>
 </template>
