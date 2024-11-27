@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, toRaw } from 'vue'
+import { ref, onMounted, toRaw, useId } from 'vue'
 import * as monaco from 'monaco-editor'
 import EditorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker'
 import { language } from 'monaco-editor/esm/vs/basic-languages/sql/sql'
@@ -13,7 +13,7 @@ self.MonacoEnvironment = {
     return new EditorWorker()
   },
 }
-
+const keyId = useId()
 function formatSQL() {
   let oldContent = toRaw(editor.value).getValue()
   toRaw(editor.value).setValue(format(oldContent))
@@ -56,7 +56,7 @@ onMounted(async () => {
     },
   })
 
-  editor.value = await monaco.editor.create(document.getElementById('editor_container'), {
+  editor.value = await monaco.editor.create(document.getElementById(`editor_container_` + keyId), {
     // 此处的配置项几乎与 VSCode 中的一致
     automaticLayout: true,
     // scrollBeyondLastLine: true,
@@ -125,7 +125,9 @@ onMounted(async () => {
       <n-button size="tiny" secondary type="warning"> 导出为 SQL 文件 </n-button>
       <n-button size="tiny" secondary> 清空所有 </n-button>
     </n-flex>
-    <div id="editor_container" style="height: 300px; border: 1px #eae9e9 solid"></div>
+
+    <!-- 核心编辑器 -->
+    <div :id="`editor_container_` + keyId" style="height: 300px; border: 1px #eae9e9 solid"></div>
   </main>
 </template>
 

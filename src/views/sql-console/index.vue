@@ -1,6 +1,6 @@
 <script setup>
 import SQLEditor from '@/views/sql-console/components/SQLEditor.vue'
-import { ref } from 'vue'
+import { ref, useId } from 'vue'
 const data = ref([])
 const columns = ref([
   { title: 'Name', key: 'name' },
@@ -12,7 +12,7 @@ const columns = ref([
 <template>
   <n-split direction="vertical" style="height: calc(100vh - 50px - 50px)">
     <template #1>
-      <SQLEditor />
+      <SQLEditor :key="useId()" />
     </template>
     <template #2>
       <n-tabs default-value="1" style="padding-left: 10px">

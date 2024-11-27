@@ -5,6 +5,8 @@ import { SettingFilled, LogoutOutlined, FileAddOutlined, CloudUploadOutlined } f
 import { HelpFilled } from '@vicons/material'
 import Preferences from '@/views/preferences/index.vue'
 import DatasourceCreator from '@/views/datasource/create.vue'
+import { useTabStore } from '@/stores/tab.js'
+import { nanoid } from 'nanoid'
 
 function renderIcon(icon) {
   return () => {
@@ -53,6 +55,18 @@ function handleSelect(key) {
       message.success('你惦记了' + key)
   }
 }
+
+const tabStore = useTabStore()
+const testTab = () => {
+  tabStore.addTab({
+    label: 'SQL 编辑器[mysql@localhost]',
+    name: nanoid(),
+    props: {
+      type: 'SQL_CONSOLE',
+      age: 18,
+    },
+  })
+}
 </script>
 
 <template>
@@ -72,6 +86,9 @@ function handleSelect(key) {
       <n-dropdown size="small" trigger="hover" :options="options4" @select="handleSelect">
         帮助
       </n-dropdown>
+      <n-button @click="testTab">
+        <span style="color: white">Tab 页面测试</span>
+      </n-button>
     </nav>
 
     <!-- 首选项弹窗 -->
