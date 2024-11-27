@@ -2,6 +2,9 @@
 import Header from './Header/index.vue'
 import Aside from './Aside/index.vue'
 import Main from './Main/index.vue'
+import { useMessage } from 'naive-ui'
+
+window.$message = useMessage()
 </script>
 
 <template>

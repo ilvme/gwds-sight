@@ -6,16 +6,19 @@ import SQLConsole from '@/views/sql-console/index.vue'
 
 export const useTabStore = defineStore('tab', () => {
   const tabList = ref([])
-  const activeTab = ref(null)
+  const activeTab = ref('welcome')
 
   /**
    * 添加 Tab 页
    * @param label 标签页 title
    * @param name 标签页 唯一标识
    * @param props 自定义参数
-   * @returns {Promise<void>}
    */
   async function addTab({ label, name, props }) {
+    if (tabList.value.length >= 12) {
+      window.$message.warning('您开了太多标签页了，请先关闭一些不使用的吧！')
+      return
+    }
     tabList.value.push({
       label,
       name,
@@ -32,7 +35,7 @@ export const useTabStore = defineStore('tab', () => {
     if (removeIndex === -1) return
     tabList.value.splice(removeIndex, 1)
     if (name === activeTab.value) {
-      activeTab.value = tabList.value[Math.min(removeIndex, tabList.value.length - 1)].name
+      activeTab.value = tabList.value[Math.min(removeIndex, tabList.value.length - 1)]?.name
     }
   }
 
