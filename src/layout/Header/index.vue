@@ -7,14 +7,8 @@ import Preferences from '@/views/preferences/index.vue'
 import DatasourceCreator from '@/views/datasource/create.vue'
 import { useTabStore } from '@/stores/tab.js'
 import { nanoid } from 'nanoid'
+import { renderIcon } from '@/utils/icon.js'
 
-function renderIcon(icon) {
-  return () => {
-    return h(NIcon, null, {
-      default: () => h(icon),
-    })
-  }
-}
 const options1 = [
   { label: '首选项', key: 'preferences', icon: renderIcon(SettingFilled) },
   { label: '新窗口打开', key: '2' },

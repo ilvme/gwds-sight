@@ -4,6 +4,7 @@ import { DatabaseFilled, FolderFilled, SafetyCertificateFilled } from '@vicons/a
 import { TableRowsRound, TableChartOutlined } from '@vicons/material'
 import { TREE_RIGHT_CLICK_MENUS } from '@/utils/rightClick.js'
 import { nanoid } from 'nanoid'
+import { renderIcon } from '@/utils/icon.js'
 
 const icon = (name, prop = null) =>
   h(NIcon, prop, {
@@ -25,40 +26,28 @@ export const treeData = [
   {
     key: '1-mysql@1.2.3.09',
     label: 'mysql@1.2.3.09',
-    prefix: () => icon(DatabaseFilled),
+    prefix: renderIcon(DatabaseFilled),
     children: [
       {
         key: '2-1',
         label: '系统数据库',
-        prefix: () =>
-          h(NIcon, null, {
-            default: () => h(FolderFilled),
-          }),
+        prefix: renderIcon(FolderFilled),
         children: [
           {
             key: '3-1-1',
             label: 'information_schema',
-            prefix: () =>
-              h(NIcon, null, {
-                default: () => h(TableRowsRound),
-              }),
+            prefix: renderIcon(TableRowsRound),
             children: [
               {
                 key: '4-1-1-1',
                 label: '表',
-                prefix: () =>
-                  h(NIcon, null, {
-                    default: () => h(FolderFilled),
-                  }),
+                prefix: renderIcon(FolderFilled),
                 children: buildTableList(10000),
               },
               {
                 key: '4-1-1-2',
                 label: '视图',
-                prefix: () =>
-                  h(NIcon, null, {
-                    default: () => h(FolderFilled),
-                  }),
+                prefix: renderIcon(FolderFilled),
                 children: buildTableList(10000),
               },
             ],
@@ -66,28 +55,19 @@ export const treeData = [
           {
             key: '3-1-2',
             label: 'performance_schema',
-            prefix: () =>
-              h(NIcon, null, {
-                default: () => h(TableRowsRound),
-              }),
+            prefix: renderIcon(TableRowsRound),
           },
         ],
       },
       {
         key: '2-2',
         label: '用户数据库',
-        prefix: () =>
-          h(NIcon, null, {
-            default: () => h(FolderFilled),
-          }),
+        prefix: renderIcon(FolderFilled),
       },
       {
         key: '2-3',
         label: '用户与权限',
-        prefix: () =>
-          h(NIcon, null, {
-            default: () => h(SafetyCertificateFilled),
-          }),
+        prefix: renderIcon(SafetyCertificateFilled),
       },
       { key: '2-4', label: '会话信息' },
       { key: '2-5', label: '系统信息' },

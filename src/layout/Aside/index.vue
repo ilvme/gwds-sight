@@ -1,18 +1,16 @@
 <script setup>
 import { ref, useTemplateRef } from 'vue'
-import { NIcon, useMessage } from 'naive-ui'
 import { RefreshOutlined } from '@vicons/material'
 import { treeData, treeRightClickMappings } from '@/utils/table.js'
 import TableCreatorAndEditor from '@/views/table/create.vue'
 import DatasourceCreator from '@/views/datasource/create.vue'
-
-const message = useMessage()
+import { Toast } from '@/utils/Layer.js'
 
 const data = ref(treeData)
 
 const filterText = ref('')
 function refreshTree() {
-  message.info('刷新树')
+  Toast.info('刷新树')
 }
 const currentClickNode = ref(null)
 
@@ -35,7 +33,7 @@ const handleSelect = (key) => {
       datasourceCreatorRef.value.openModal()
       break
     default:
-      message.success(key)
+      Toast.success(key)
   }
   showDropdown.value = false
 }
@@ -46,7 +44,7 @@ const nodeProps = ({ option }) => {
   return {
     onClick() {
       currentClickNode.value = option
-      message.info(`[Click] ${option.label}`)
+      Toast.info(`[Click] ${option.label}`)
     },
     onContextmenu(e) {
       currentClickNode.value = option
@@ -84,7 +82,6 @@ const nodeProps = ({ option }) => {
       </n-button>
     </n-flex>
 
-    <!--    <n-scrollbar trigger="none" x-scrollable>-->
     <n-tree
       virtual-scroll
       block-line
@@ -95,6 +92,7 @@ const nodeProps = ({ option }) => {
       style="height: calc(100vh - 50px)"
       class="tree"
     />
+    <!-- 右键菜单 -->
     <n-dropdown
       size="small"
       trigger="manual"
@@ -106,9 +104,11 @@ const nodeProps = ({ option }) => {
       @select="handleSelect"
       @clickoutside="handleClickOutside"
     />
-    <!--    </n-scrollbar>-->
 
+    <!-- 创建表 -->
     <TableCreatorAndEditor ref="tableCreatorAndEditorRef" />
+
+    <!-- 创建数据源 -->
     <DatasourceCreator ref="datasourceCreatorRef" />
   </aside>
 </template>

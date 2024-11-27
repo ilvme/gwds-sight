@@ -1,23 +1,23 @@
 <script setup>
 import { useTabStore } from '@/stores/tab.js'
 import { storeToRefs } from 'pinia'
-import { computed } from 'vue'
 import Welcome from '@/views/Welcome.vue'
 import { Toast } from '@/utils/Layer.js'
-import { MoreOutlined } from '@vicons/antd'
+import { MoreOutlined, CloseCircleOutlined } from '@vicons/antd'
+import { renderIcon } from '@/utils/icon.js'
 
 const tabStore = useTabStore()
 
 const { tabList, activeTab } = storeToRefs(tabStore)
-
-const closable = computed(() => tabList.value.length > 0)
 
 // 标签关闭事件
 function handleTabClose(name) {
   tabStore.removeTab(name)
 }
 
-const rightOptions = [{ label: '关闭所有', key: 'close-all' }]
+const rightOptions = [
+  { label: '关闭所有', key: 'close-all', icon: renderIcon(CloseCircleOutlined) },
+]
 function handleSelect(key) {
   switch (key) {
     case 'close-all':
@@ -31,14 +31,7 @@ function handleSelect(key) {
 <template>
   <main>
     <Welcome v-if="tabList.length === 0" />
-    <n-tabs
-      v-else
-      size="small"
-      v-model:value="activeTab"
-      type="card"
-      :closable="closable"
-      @close="handleTabClose"
-    >
+    <n-tabs v-else size="small" v-model:value="activeTab" type="card" @close="handleTabClose">
       <n-tab-pane
         display-directive="show"
         v-for="tab in tabList"
