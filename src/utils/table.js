@@ -1,4 +1,3 @@
-import { DatabaseFilled, SafetyCertificateFilled } from '@vicons/antd'
 import {
   TableRowsRound,
   TableChartOutlined,
@@ -8,6 +7,7 @@ import {
   TableViewRound,
   ViewListRound,
   FunctionsRound,
+  VerifiedUserRound,
 } from '@vicons/material'
 import { TREE_RIGHT_CLICK_MENUS } from '@/utils/rightClick.js'
 import { nanoid } from 'nanoid'
@@ -76,7 +76,7 @@ export const treeData = [
       {
         key: '2-3',
         label: '用户与权限',
-        prefix: renderIcon(SafetyCertificateFilled),
+        prefix: renderIcon(VerifiedUserRound),
       },
       { key: '2-4', label: '会话信息', prefix: renderIcon(CastConnectedRound) },
       { key: '2-5', label: '系统信息', prefix: renderIcon(InfoRound) },
