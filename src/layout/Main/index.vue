@@ -3,6 +3,7 @@ import { useTabStore } from '@/stores/tab.js'
 import { storeToRefs } from 'pinia'
 import Welcome from '@/views/Welcome.vue'
 import { MoreOutlined, CloseCircleOutlined, AliwangwangOutlined } from '@vicons/antd'
+import { AutoAwesomeRound, AssistantPhotoFilled } from '@vicons/material'
 import { computed, h } from 'vue'
 import { renderIcon } from '@/utils/icon.js'
 import { NIcon } from 'naive-ui'
@@ -27,9 +28,9 @@ const options = computed(() => {
       obj.icon = () => {
         return h(
           NIcon,
-          { color: 'green' },
+          { color: 'green', size: 20 },
           {
-            default: () => h(AliwangwangOutlined),
+            default: () => h(AutoAwesomeRound),
           },
         )
       }
@@ -75,7 +76,7 @@ function handleSelect(key) {
             <template #trigger>
               <span>{{ tab.label }}</span>
             </template>
-            <p>数据源：mysql@1.2.3.09</p>
+            <p>数据源：{{ tab.label }}</p>
             <p>类型：MySQL</p>
             <p>URL：jdbc:mysql//1.2.3.09:3306</p>
           </n-popover>
@@ -87,7 +88,13 @@ function handleSelect(key) {
 
       <!-- 标签栏后缀，一些统一操作按钮 -->
       <template #suffix>
-        <n-dropdown trigger="click" :options="options" @select="handleSelect">
+        <n-dropdown
+          size="small"
+          style="max-height: 300px; overflow: auto"
+          trigger="click"
+          :options="options"
+          @select="handleSelect"
+        >
           <n-icon size="20" style="margin-right: 12px; cursor: pointer">
             <MoreOutlined />
           </n-icon>
