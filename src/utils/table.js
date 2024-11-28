@@ -27,34 +27,34 @@ const buildTableList = (count, icon = TableChartOutlined) => {
 
 export const treeData = [
   {
-    key: '1-mysql@1.2.3.09',
+    key: nanoid(),
     label: 'mysql@1.2.3.09',
     prefix: renderIcon(ViewListRound, { size: 18 }),
     children: [
       {
-        key: '2-1',
+        key: nanoid(),
         label: '系统数据库',
         prefix: renderIcon(FolderRound),
         children: [
           {
-            key: '3-1-1',
+            key: nanoid(),
             label: 'information_schema',
             prefix: renderIcon(TableRowsRound),
             children: [
               {
-                key: '4-1-1-1',
+                key: nanoid(),
                 label: '表',
                 prefix: renderIcon(FolderRound),
                 children: buildTableList(1),
               },
               {
-                key: '4-1-1-2',
+                key: nanoid(),
                 label: '视图',
                 prefix: renderIcon(FolderRound),
                 children: buildTableList(10, TableViewRound),
               },
               {
-                key: '4-1-1-3',
+                key: nanoid(),
                 label: '函数',
                 prefix: renderIcon(FolderRound),
                 children: buildTableList(10, FunctionsRound),
@@ -62,35 +62,192 @@ export const treeData = [
             ],
           },
           {
-            key: '3-1-2',
+            key: nanoid(),
             label: 'performance_schema',
             prefix: renderIcon(TableRowsRound),
           },
         ],
       },
       {
-        key: '2-2',
+        key: nanoid(),
         label: '用户数据库',
         prefix: renderIcon(FolderRound),
       },
       {
-        key: '2-3',
+        key: nanoid(),
         label: '用户与权限',
         prefix: renderIcon(VerifiedUserRound),
       },
-      { key: '2-4', label: '会话信息', prefix: renderIcon(CastConnectedRound) },
-      { key: '2-5', label: '系统信息', prefix: renderIcon(InfoRound) },
+      { key: nanoid(), label: '会话信息', prefix: renderIcon(CastConnectedRound) },
+      { key: nanoid(), label: '系统信息', prefix: renderIcon(InfoRound) },
     ],
   },
   {
-    key: '1-gbase@localhost',
-    label: 'gbase@localhost',
+    key: nanoid(),
+    label: 'gbase@111.222.222.192',
+    prefix: renderIcon(ViewListRound, { size: 18 }),
     children: [
-      { key: '2-1-gbase@localhost', label: '系统数据库' },
-      { key: '2-2-gbase@localhost', label: '用户数据库' },
-      { key: '2-3-gbase@localhost', label: '用户与权限' },
-      { key: '2-4-gbase@localhost', label: '会话信息' },
-      { key: '2-5-gbase@localhost', label: '系统信息' },
+      {
+        key: nanoid(),
+        label: '系统数据库',
+        prefix: renderIcon(FolderRound),
+        children: [
+          {
+            key: nanoid(),
+            label: 'information_schema',
+            prefix: renderIcon(TableRowsRound),
+            children: [
+              {
+                key: nanoid(),
+                label: '表',
+                prefix: renderIcon(FolderRound),
+                children: buildTableList(1),
+              },
+              {
+                key: nanoid(),
+                label: '视图',
+                prefix: renderIcon(FolderRound),
+                children: buildTableList(10, TableViewRound),
+              },
+              {
+                key: nanoid(),
+                label: '函数',
+                prefix: renderIcon(FolderRound),
+                children: buildTableList(10, FunctionsRound),
+              },
+            ],
+          },
+          {
+            key: nanoid(),
+            label: 'performance_schema',
+            prefix: renderIcon(TableRowsRound),
+          },
+        ],
+      },
+      {
+        key: nanoid(),
+        label: '用户数据库',
+        prefix: renderIcon(FolderRound),
+      },
+      {
+        key: nanoid(),
+        label: '用户与权限',
+        prefix: renderIcon(VerifiedUserRound),
+      },
+      { key: nanoid(), label: '会话信息', prefix: renderIcon(CastConnectedRound) },
+      { key: nanoid(), label: '系统信息', prefix: renderIcon(InfoRound) },
+    ],
+  },
+  {
+    key: nanoid(),
+    label: 'sqlite@212.212.123.109',
+    prefix: renderIcon(ViewListRound, { size: 18 }),
+    children: [
+      {
+        key: nanoid(),
+        label: '系统数据库',
+        prefix: renderIcon(FolderRound),
+        children: [
+          {
+            key: nanoid(),
+            label: 'information_schema',
+            prefix: renderIcon(TableRowsRound),
+            children: [
+              {
+                key: nanoid(),
+                label: '表',
+                prefix: renderIcon(FolderRound),
+                children: buildTableList(1),
+              },
+              {
+                key: nanoid(),
+                label: '视图',
+                prefix: renderIcon(FolderRound),
+                children: buildTableList(10, TableViewRound),
+              },
+              {
+                key: nanoid(),
+                label: '函数',
+                prefix: renderIcon(FolderRound),
+                children: buildTableList(10, FunctionsRound),
+              },
+            ],
+          },
+          {
+            key: nanoid(),
+            label: 'performance_schema',
+            prefix: renderIcon(TableRowsRound),
+          },
+        ],
+      },
+      {
+        key: nanoid(),
+        label: '用户数据库',
+        prefix: renderIcon(FolderRound),
+      },
+      {
+        key: nanoid(),
+        label: '用户与权限',
+        prefix: renderIcon(VerifiedUserRound),
+      },
+      { key: nanoid(), label: '会话信息', prefix: renderIcon(CastConnectedRound) },
+      { key: nanoid(), label: '系统信息', prefix: renderIcon(InfoRound) },
+    ],
+  },
+  {
+    key: nanoid(),
+    label: 'mysql@12.23.34.109',
+    prefix: renderIcon(ViewListRound, { size: 18 }),
+    children: [
+      {
+        key: nanoid(),
+        label: '系统数据库',
+        prefix: renderIcon(FolderRound),
+        children: [
+          {
+            key: nanoid(),
+            label: 'information_schema',
+            prefix: renderIcon(TableRowsRound),
+            children: [
+              {
+                key: nanoid(),
+                label: '表',
+                prefix: renderIcon(FolderRound),
+                children: buildTableList(1),
+              },
+              {
+                key: nanoid(),
+                label: '视图',
+                prefix: renderIcon(FolderRound),
+                children: buildTableList(10, TableViewRound),
+              },
+              {
+                key: nanoid(),
+                label: '函数',
+                prefix: renderIcon(FolderRound),
+                children: buildTableList(10, FunctionsRound),
+              },
+            ],
+          },
+          {
+            key: nanoid(),
+            label: 'performance_schema',
+            prefix: renderIcon(TableRowsRound),
+          },
+        ],
+      },
+      {
+        key: nanoid(),
+        label: '用户数据库',
+        prefix: renderIcon(FolderRound),
+      },
+      {
+        key: nanoid(),
+        label: '用户与权限',
+        prefix: renderIcon(VerifiedUserRound),
+      },
+      { key: nanoid(), label: '会话信息', prefix: renderIcon(CastConnectedRound) },
+      { key: nanoid(), label: '系统信息', prefix: renderIcon(InfoRound) },
     ],
   },
 ]

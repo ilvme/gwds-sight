@@ -80,9 +80,9 @@ const testTab = () => {
       <n-dropdown size="small" trigger="hover" :options="options4" @select="handleSelect">
         帮助
       </n-dropdown>
-      <n-button @click="testTab">
+      <n-text @click="testTab" style="cursor: pointer">
         <span style="color: white">Tab 页面测试</span>
-      </n-button>
+      </n-text>
     </nav>
 
     <!-- 首选项弹窗 -->
