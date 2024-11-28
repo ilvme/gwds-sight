@@ -1,16 +1,25 @@
-import { DatabaseFilled, FolderFilled, SafetyCertificateFilled } from '@vicons/antd'
-import { TableRowsRound, TableChartOutlined } from '@vicons/material'
+import { DatabaseFilled, SafetyCertificateFilled } from '@vicons/antd'
+import {
+  TableRowsRound,
+  TableChartOutlined,
+  FolderRound,
+  CastConnectedRound,
+  InfoRound,
+  TableViewRound,
+  ViewListRound,
+  FunctionsRound,
+} from '@vicons/material'
 import { TREE_RIGHT_CLICK_MENUS } from '@/utils/rightClick.js'
 import { nanoid } from 'nanoid'
 import { renderIcon } from '@/utils/icon.js'
 
-const tList = []
-const buildTableList = (count) => {
+const buildTableList = (count, icon = TableChartOutlined) => {
+  const tList = []
   for (let i = 0; i < count; i++) {
     tList.push({
       key: nanoid(),
       label: nanoid(),
-      prefix: renderIcon(TableChartOutlined),
+      prefix: renderIcon(icon),
     })
   }
   return tList
@@ -20,12 +29,12 @@ export const treeData = [
   {
     key: '1-mysql@1.2.3.09',
     label: 'mysql@1.2.3.09',
-    prefix: renderIcon(DatabaseFilled),
+    prefix: renderIcon(ViewListRound, { size: 18 }),
     children: [
       {
         key: '2-1',
         label: '系统数据库',
-        prefix: renderIcon(FolderFilled),
+        prefix: renderIcon(FolderRound),
         children: [
           {
             key: '3-1-1',
@@ -35,14 +44,20 @@ export const treeData = [
               {
                 key: '4-1-1-1',
                 label: '表',
-                prefix: renderIcon(FolderFilled),
-                children: buildTableList(10000),
+                prefix: renderIcon(FolderRound),
+                children: buildTableList(1),
               },
               {
                 key: '4-1-1-2',
                 label: '视图',
-                prefix: renderIcon(FolderFilled),
-                children: buildTableList(10000),
+                prefix: renderIcon(FolderRound),
+                children: buildTableList(10, TableViewRound),
+              },
+              {
+                key: '4-1-1-3',
+                label: '函数',
+                prefix: renderIcon(FolderRound),
+                children: buildTableList(10, FunctionsRound),
               },
             ],
           },
@@ -56,15 +71,15 @@ export const treeData = [
       {
         key: '2-2',
         label: '用户数据库',
-        prefix: renderIcon(FolderFilled),
+        prefix: renderIcon(FolderRound),
       },
       {
         key: '2-3',
         label: '用户与权限',
         prefix: renderIcon(SafetyCertificateFilled),
       },
-      { key: '2-4', label: '会话信息' },
-      { key: '2-5', label: '系统信息' },
+      { key: '2-4', label: '会话信息', prefix: renderIcon(CastConnectedRound) },
+      { key: '2-5', label: '系统信息', prefix: renderIcon(InfoRound) },
     ],
   },
   {
