@@ -1,7 +1,19 @@
 <script setup>
 import { h, useTemplateRef } from 'vue'
 import { useMessage } from 'naive-ui'
-import { SettingsRound, LogOutRound, PostAddRound, CloudUploadRound } from '@vicons/material'
+import {
+  SettingsRound,
+  LogOutRound,
+  PostAddRound,
+  CloudUploadRound,
+  OpenInNewRound,
+  PermDataSettingSharp,
+  PersonRound,
+  KeyboardRound,
+  AssignmentRound,
+  BugReportRound,
+  BookmarkRound,
+} from '@vicons/material'
 import { HelpFilled } from '@vicons/material'
 import Preferences from '@/views/preferences/index.vue'
 import DatasourceCreator from '@/views/datasource/create.vue'
@@ -11,27 +23,29 @@ import { renderIcon } from '@/utils/icon.js'
 
 const options1 = [
   { label: '首选项', key: 'preferences', icon: renderIcon(SettingsRound) },
-  { label: '新窗口打开', key: '2' },
+  { label: '新窗口打开', key: '2', icon: renderIcon(OpenInNewRound) },
   { type: 'divider' },
   { label: '退出', key: 'logout', icon: renderIcon(LogOutRound) },
 ]
 
 const options2 = [
   { label: '新建数据源', key: 'datasource-create', icon: renderIcon(PostAddRound) },
-  { label: '驱动管理', key: 'the beverly hills hotel, los angeles' },
+  { label: '驱动管理', key: 'the b', icon: renderIcon(PermDataSettingSharp) },
 ]
 
 const options3 = [
-  { label: 'SQL 模板', key: 'marina bay sands' },
-  { label: '我的 SQL', key: "brown's hostel, london" },
+  { label: 'SQL 模板', key: 'marina bay sands', icon: renderIcon(AssignmentRound) },
+  { label: '我的 SQL', key: "brown's hostel, london", icon: renderIcon(BookmarkRound) },
   { label: '导入导出', key: 'atlantis nahamas, nassau', icon: renderIcon(CloudUploadRound) },
 ]
 
 const options4 = [
-  { label: '关于', key: "brown's hos dtel, london" },
+  { label: '关于', key: "brown's hos n", icon: renderIcon(PersonRound) },
   { label: '帮助', key: 'marina bay sands', icon: renderIcon(HelpFilled) },
   { type: 'divider' },
-  { label: '快捷键', key: 'atlantis nahamas, nassau' },
+  { label: '快捷键', key: 'atlantis, nassau', icon: renderIcon(KeyboardRound) },
+  { type: 'divider' },
+  { label: '报个 Bug', key: 'bug', icon: renderIcon(BugReportRound) },
 ]
 const message = useMessage()
 const preferencesRef = useTemplateRef('preferencesRef')
