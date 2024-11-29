@@ -2,7 +2,7 @@
 import { useBoolean } from '@/hooks/useBoolean.js'
 import { h, nextTick, ref } from 'vue'
 import InputEditor from '@/views/table/components/InputEditor.vue'
-import { PlusOutlined } from '@vicons/antd'
+import { PlusRound } from '@vicons/material'
 import { nanoid } from 'nanoid'
 import { NButton, NIcon, NSelect } from 'naive-ui'
 
@@ -191,7 +191,7 @@ defineExpose({ openModal })
           <n-button @click="addRow" size="small" type="primary">
             <template #icon>
               <n-icon>
-                <PlusOutlined />
+                <PlusRound />
               </n-icon>
             </template>
             添加列

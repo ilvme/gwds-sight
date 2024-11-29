@@ -8,6 +8,8 @@ import {
   ViewListRound,
   FunctionsRound,
   VerifiedUserRound,
+  WindowRound,
+  GppGoodRound,
 } from '@vicons/material'
 import { TREE_RIGHT_CLICK_MENUS } from '@/utils/rightClick.js'
 import { nanoid } from 'nanoid'
@@ -51,7 +53,7 @@ export const treeData = [
                 key: nanoid(),
                 label: '视图',
                 prefix: renderIcon(FolderRound),
-                children: buildTableList(10, TableViewRound),
+                children: buildTableList(10, WindowRound),
               },
               {
                 key: nanoid(),
@@ -76,7 +78,7 @@ export const treeData = [
       {
         key: nanoid(),
         label: '用户与权限',
-        prefix: renderIcon(VerifiedUserRound),
+        prefix: renderIcon(GppGoodRound),
       },
       { key: nanoid(), label: '会话信息', prefix: renderIcon(CastConnectedRound) },
       { key: nanoid(), label: '系统信息', prefix: renderIcon(InfoRound) },
@@ -107,7 +109,7 @@ export const treeData = [
                 key: nanoid(),
                 label: '视图',
                 prefix: renderIcon(FolderRound),
-                children: buildTableList(10, TableViewRound),
+                children: buildTableList(10, WindowRound),
               },
               {
                 key: nanoid(),

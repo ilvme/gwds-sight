@@ -4,7 +4,7 @@ import * as monaco from 'monaco-editor'
 import EditorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker'
 import { language } from 'monaco-editor/esm/vs/basic-languages/sql/sql'
 import { format } from 'sql-formatter'
-import { CaretRightOutlined } from '@vicons/antd'
+import { PlayArrowRound } from '@vicons/material'
 
 defineOptions({ name: 'SQLEditor' })
 
@@ -117,7 +117,7 @@ onMounted(async () => {
     <n-flex style="margin-bottom: 5px">
       <n-button size="tiny" type="primary">
         执行 F8
-        <n-icon size="14" style="margin-left: 8px"> <CaretRightOutlined /> </n-icon>
+        <n-icon size="14" style="margin-left: 8px"> <PlayArrowRound /> </n-icon>
       </n-button>
       <n-button size="tiny" secondary type="primary">执行所有 F9</n-button>
       <n-button size="tiny" secondary type="primary" @click="formatSQL"> 格式化 </n-button>

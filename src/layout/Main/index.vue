@@ -2,8 +2,8 @@
 import { useTabStore } from '@/stores/tab.js'
 import { storeToRefs } from 'pinia'
 import Welcome from '@/views/Welcome.vue'
-import { MoreOutlined, CloseCircleOutlined, AliwangwangOutlined } from '@vicons/antd'
-import { AutoAwesomeRound, AssistantPhotoFilled } from '@vicons/material'
+import { MoreVertRound, CloseRound } from '@vicons/material'
+import { AutoAwesomeRound } from '@vicons/material'
 import { computed, h } from 'vue'
 import { renderIcon } from '@/utils/icon.js'
 import { NIcon } from 'naive-ui'
@@ -13,7 +13,7 @@ const tabStore = useTabStore()
 const { tabList, activeTab } = storeToRefs(tabStore)
 
 const options = computed(() => {
-  const tabs = [{ label: '关闭所有', key: 'close-all', icon: renderIcon(CloseCircleOutlined) }]
+  const tabs = [{ label: '关闭所有', key: 'close-all', icon: renderIcon(CloseRound) }]
 
   if (tabs.length > 0) {
     tabs.push({ type: 'divider', key: 'right-options-divider' })
@@ -96,7 +96,7 @@ function handleSelect(key) {
           @select="handleSelect"
         >
           <n-icon size="20" style="margin-right: 12px; cursor: pointer">
-            <MoreOutlined />
+            <MoreVertRound />
           </n-icon>
         </n-dropdown>
       </template>

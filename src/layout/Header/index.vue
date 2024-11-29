@@ -1,7 +1,7 @@
 <script setup>
 import { h, useTemplateRef } from 'vue'
-import { NIcon, useMessage } from 'naive-ui'
-import { SettingFilled, LogoutOutlined, FileAddOutlined, CloudUploadOutlined } from '@vicons/antd'
+import { useMessage } from 'naive-ui'
+import { SettingsRound, LogOutRound, PostAddRound, CloudUploadRound } from '@vicons/material'
 import { HelpFilled } from '@vicons/material'
 import Preferences from '@/views/preferences/index.vue'
 import DatasourceCreator from '@/views/datasource/create.vue'
@@ -10,21 +10,21 @@ import { nanoid } from 'nanoid'
 import { renderIcon } from '@/utils/icon.js'
 
 const options1 = [
-  { label: '首选项', key: 'preferences', icon: renderIcon(SettingFilled) },
+  { label: '首选项', key: 'preferences', icon: renderIcon(SettingsRound) },
   { label: '新窗口打开', key: '2' },
   { type: 'divider' },
-  { label: '退出', key: 'logout', icon: renderIcon(LogoutOutlined) },
+  { label: '退出', key: 'logout', icon: renderIcon(LogOutRound) },
 ]
 
 const options2 = [
-  { label: '新建数据源', key: 'datasource-create', icon: renderIcon(FileAddOutlined) },
+  { label: '新建数据源', key: 'datasource-create', icon: renderIcon(PostAddRound) },
   { label: '驱动管理', key: 'the beverly hills hotel, los angeles' },
 ]
 
 const options3 = [
   { label: 'SQL 模板', key: 'marina bay sands' },
   { label: '我的 SQL', key: "brown's hostel, london" },
-  { label: '导入导出', key: 'atlantis nahamas, nassau', icon: renderIcon(CloudUploadOutlined) },
+  { label: '导入导出', key: 'atlantis nahamas, nassau', icon: renderIcon(CloudUploadRound) },
 ]
 
 const options4 = [
