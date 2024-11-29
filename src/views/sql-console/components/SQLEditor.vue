@@ -1,11 +1,24 @@
 <script setup>
-import { onMounted, ref, toRaw, useId } from 'vue'
+import { h, onMounted, ref, toRaw, useId } from 'vue'
 import * as monaco from 'monaco-editor'
 import EditorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker'
 import { language } from 'monaco-editor/esm/vs/basic-languages/sql/sql'
 import { format } from 'sql-formatter'
-import { PlayArrowRound } from '@vicons/material'
+import {
+  PlayArrowRound,
+  TableRowsRound,
+  MoreHorizRound,
+  CloudUploadRound,
+  ShareFilled,
+  SaveRound,
+  AutoFixHighRound,
+  DeleteSweepRound,
+  RefreshRound,
+  CheckRound,
+} from '@vicons/material'
 import { useResizeObserver } from '@vueuse/core'
+import { NIcon } from 'naive-ui'
+import { renderIcon } from '@/utils/icon.js'
 
 defineOptions({ name: 'SQLEditor' })
 
@@ -101,6 +114,36 @@ onMounted(async () => {
   })
 })
 
+const currentDatabase = ref(null)
+const databaseOptions = ref([
+  { label: 'gbase', value: 'gbase' },
+  { label: 'db_dms', value: 'db_dms' },
+  { label: 'gdom', value: 'gdom' },
+])
+
+function renderLabel(option) {
+  return h(
+    'div',
+    {
+      style: { display: 'flex', alignItems: 'center', gap: '5px' },
+    },
+    [renderIcon(TableRowsRound)(), option.label],
+  )
+}
+const editorOtherOptions = [
+  { label: '保存到我的 SQL', key: 'profile', icon: renderIcon(SaveRound) },
+  { type: 'divider', key: useId() },
+  { label: '导出为 SQL 脚本', key: 'editProfile', icon: renderIcon(ShareFilled) },
+  { label: '导入 SQL 脚本', key: 'logout', icon: renderIcon(CloudUploadRound) },
+]
+
+// 自动提交
+const autoCommit = ref('automatic')
+const commitOptions = [
+  { label: 'Tx: 自动', value: 'automatic' },
+  { label: 'Tx: 手动', value: 'manual' },
+]
+
 // SQL 格式化
 function formatSQL() {
   let oldContent = toRaw(editor.value).getValue()
@@ -110,19 +153,92 @@ function formatSQL() {
 
 <template>
   <main style="height: 100%; display: flex; flex-direction: column">
-    <n-flex style="margin-bottom: 5px">
-      <n-button size="tiny" type="primary">
-        执行 F8
-        <n-icon size="14" style="margin-left: 8px"> <PlayArrowRound /> </n-icon>
-      </n-button>
-      <n-button size="tiny" secondary type="primary">执行所有 F9</n-button>
-      <n-button size="tiny" secondary type="primary" @click="formatSQL"> 格式化 </n-button>
-      <n-button size="tiny" secondary> 保存为 SQL 模板 </n-button>
-      <n-button size="tiny" secondary type="warning"> 导出为 SQL 文件 </n-button>
-      <n-button size="tiny" secondary> 清空所有 </n-button>
+    <!-- 功能操作区域 -->
+    <n-flex style="margin-bottom: 3px; padding-right: 6px" justify="space-between" align="center">
+      <n-flex>
+        <n-select
+          style="width: 100px"
+          placeholder="选择数据库"
+          v-model:value="autoCommit"
+          size="tiny"
+          :options="commitOptions"
+        />
+        <div v-if="autoCommit === 'manual'">
+          <n-tooltip trigger="hover" :delay="500">
+            <template #trigger>
+              <n-button size="tiny" type="primary" tertiary>
+                <n-icon size="18" color="#18a058"> <CheckRound /> </n-icon>
+              </n-button>
+            </template>
+            提交
+          </n-tooltip>
+          <n-tooltip trigger="hover" :delay="500">
+            <template #trigger>
+              <n-button size="tiny" type="primary" tertiary>
+                <n-icon size="18" color="#d03050"> <RefreshRound /> </n-icon>
+              </n-button>
+            </template>
+            回滚
+          </n-tooltip>
+        </div>
+
+        <n-divider vertical />
+        <n-tooltip trigger="hover" :delay="500">
+          <template #trigger>
+            <n-button size="tiny" type="primary">
+              <n-icon size="16"> <PlayArrowRound /> </n-icon>
+            </n-button>
+          </template>
+          执行 SQL
+        </n-tooltip>
+
+        <n-tooltip trigger="hover" :delay="500">
+          <template #trigger>
+            <n-button size="tiny" type="success" secondary @click="formatSQL">
+              <n-icon size="16"> <AutoFixHighRound /> </n-icon>
+            </n-button>
+          </template>
+          格式化
+        </n-tooltip>
+
+        <n-tooltip trigger="hover" :delay="200">
+          <template #trigger>
+            <n-button size="tiny" type="warning" secondary @click="formatSQL">
+              <n-icon size="16"> <DeleteSweepRound /> </n-icon>
+            </n-button>
+          </template>
+          清空
+        </n-tooltip>
+
+        <n-dropdown :options="editorOtherOptions" size="small">
+          <n-button size="tiny" secondary style="display: flex; align-items: center">
+            <n-icon size="18"> <MoreHorizRound /> </n-icon>
+          </n-button>
+        </n-dropdown>
+      </n-flex>
+      <n-flex>
+        <n-select
+          style="width: 200px"
+          placeholder="选择数据源"
+          v-model:value="currentDatabase"
+          size="tiny"
+          filterable
+          :render-label="renderLabel"
+          :options="databaseOptions"
+        />
+        <n-select
+          style="width: 180px"
+          placeholder="选择数据库"
+          v-model:value="currentDatabase"
+          size="tiny"
+          filterable
+          :render-label="renderLabel"
+          :options="databaseOptions"
+        />
+      </n-flex>
     </n-flex>
 
-    <!-- 核心编辑器 -->
+    <!-- 核心编辑器区域 -->
     <div
       ref="editorRef"
       :id="`editor_container_` + keyId"
@@ -137,4 +253,15 @@ function formatSQL() {
   </main>
 </template>
 
-<style scoped></style>
+<style scoped>
+.commit:hover {
+  cursor: default;
+  border: 1px salmon solid;
+}
+
+:deep(.n-divider.n-divider--vertical) {
+  width: 2px;
+  height: 20px;
+  margin: 0 5px;
+}
+</style>

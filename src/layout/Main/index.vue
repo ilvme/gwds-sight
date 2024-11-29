@@ -103,3 +103,13 @@ function handleSelect(key) {
     </n-tabs>
   </main>
 </template>
+
+<style scoped>
+:deep(.n-tabs .n-tabs-tab) {
+  padding: 6px 10px;
+}
+
+:deep(.n-tabs .n-tabs-nav.n-tabs-nav--card-type .n-tabs-tab.n-tabs-tab--closable) {
+  padding-right: 4px;
+}
+</style>
