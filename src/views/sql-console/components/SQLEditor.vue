@@ -109,7 +109,7 @@ function formatSQL() {
 </script>
 
 <template>
-  <main style="margin-left: 10px; margin-right: 10px; padding-bottom: 40px; height: 100%">
+  <main style="height: 100%; display: flex; flex-direction: column">
     <n-flex style="margin-bottom: 5px">
       <n-button size="tiny" type="primary">
         执行 F8
@@ -126,7 +126,13 @@ function formatSQL() {
     <div
       ref="editorRef"
       :id="`editor_container_` + keyId"
-      style="border: 1px #eae9e9 solid; height: 100%"
+      style="
+        border: 1px #e4e4e4 solid;
+        height: 100%;
+        margin-bottom: -1px;
+        margin-left: -1px;
+        padding: 5px 0;
+      "
     />
   </main>
 </template>
