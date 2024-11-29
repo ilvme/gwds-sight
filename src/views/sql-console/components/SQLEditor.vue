@@ -1,10 +1,11 @@
 <script setup>
-import { ref, onMounted, toRaw, useId } from 'vue'
+import { onMounted, ref, toRaw, useId } from 'vue'
 import * as monaco from 'monaco-editor'
 import EditorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker'
 import { language } from 'monaco-editor/esm/vs/basic-languages/sql/sql'
 import { format } from 'sql-formatter'
 import { PlayArrowRound } from '@vicons/material'
+import { useResizeObserver } from '@vueuse/core'
 
 defineOptions({ name: 'SQLEditor' })
 
@@ -13,31 +14,27 @@ self.MonacoEnvironment = {
     return new EditorWorker()
   },
 }
+
 const keyId = useId()
-function formatSQL() {
-  let oldContent = toRaw(editor.value).getValue()
-  toRaw(editor.value).setValue(format(oldContent))
-}
+
+// 注册SQL关键字提示
+// 这个是自定义的表字段数据
+const fieldsArr = [
+  // type 区分关键字和字段
+  { type: 'Field', value: 'name' },
+  { type: 'Field', value: 'age' },
+  { type: 'Field', value: 'sex' },
+]
+const editorRef = ref(null)
 const editor = ref(null)
 onMounted(async () => {
-  // 注册SQL关键字提示
-  // 这个是自定义的表字段数据
-  const fieldsArr = [
-    // type 区分关键字和字段
-    { type: 'Field', value: 'name' },
-    { type: 'Field', value: 'age' },
-    { type: 'Field', value: 'sex' },
-  ]
-
+  // 注册自定义关键字提示
   monaco.languages.registerCompletionItemProvider('sql', {
     provideCompletionItems: (model, position) => {
       let suggestions = []
       // 再把内置的关键字数据处理下
       const temp = language.keywords.map((item) => {
-        return {
-          type: 'Keyword',
-          value: item,
-        }
+        return { type: 'Keyword', value: item }
       })
       // 把关键字和表字段数据合到一起，这样就不用输入快捷键才会显示表字段了
       const result = [...fieldsArr, ...temp]
@@ -47,23 +44,16 @@ onMounted(async () => {
           kind: monaco.languages.CompletionItemKind[item.type],
           insertText: item.value + ' ',
           detail: item.type === 'Keyword' ? '内置关键字' : '表字段',
-          // range,
         })
       })
-      return {
-        suggestions,
-      }
+      return { suggestions }
     },
   })
 
+  // 编辑器初始化
   editor.value = await monaco.editor.create(document.getElementById(`editor_container_` + keyId), {
-    // 此处的配置项几乎与 VSCode 中的一致
     automaticLayout: true,
-    // scrollBeyondLastLine: true,
-    minimap: {
-      // 关闭小地图
-      enabled: false,
-    },
+    minimap: { enabled: false }, // 关闭小地图
     tabSize: 2,
     fontSize: 14,
     cursorBlinking: 'smooth',
@@ -73,20 +63,16 @@ onMounted(async () => {
     value: `-- 查询 user 表数据 \nSELECT * FROM user WHERE id = 1 and username like '%kangjia%' ORDER BY age DESC;`,
     contextmenu: true,
     scrollbar: {
-      // Subtle shadows to the left & top. Defaults to true.
       useShadows: false,
-
-      // Render vertical arrows. Defaults to false.
       verticalHasArrows: false,
-      // Render horizontal arrows. Defaults to false.
       horizontalHasArrows: false,
-
       verticalScrollbarSize: 8,
       horizontalScrollbarSize: 8,
       arrowSize: 0,
     },
   })
 
+  // 添加右键菜单
   editor.value.addAction({
     id: 'sql-formatter',
     label: 'SQL 格式化',
@@ -109,11 +95,21 @@ onMounted(async () => {
       formatSQL()
     },
   })
+
+  useResizeObserver(editorRef.value, () => {
+    toRaw(editor.value).layout()
+  })
 })
+
+// SQL 格式化
+function formatSQL() {
+  let oldContent = toRaw(editor.value).getValue()
+  toRaw(editor.value).setValue(format(oldContent))
+}
 </script>
 
 <template>
-  <main style="margin-left: 10px; margin-right: 10px">
+  <main style="margin-left: 10px; margin-right: 10px; padding-bottom: 40px; height: 100%">
     <n-flex style="margin-bottom: 5px">
       <n-button size="tiny" type="primary">
         执行 F8
@@ -127,7 +123,11 @@ onMounted(async () => {
     </n-flex>
 
     <!-- 核心编辑器 -->
-    <div :id="`editor_container_` + keyId" style="height: 300px; border: 1px #eae9e9 solid"></div>
+    <div
+      ref="editorRef"
+      :id="`editor_container_` + keyId"
+      style="border: 1px #eae9e9 solid; height: 100%"
+    />
   </main>
 </template>
 

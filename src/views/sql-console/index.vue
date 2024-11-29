@@ -1,13 +1,19 @@
 <script setup>
 import SQLEditor from '@/views/sql-console/components/SQLEditor.vue'
-import { ref, useId } from 'vue'
+import { useId } from 'vue'
 import DataOperation from '@/views/data/index.vue'
 </script>
 
 <template>
-  <n-split direction="vertical" style="height: calc(100vh - 50px - 50px)">
+  <n-split
+    direction="vertical"
+    style="height: calc(100vh - 50px - 50px)"
+    :max="0.8"
+    :min="0.2"
+    default-size="360px"
+  >
     <template #1>
-      <SQLEditor :key="useId()" />
+      <SQLEditor ref="sqlEditorRef" :key="useId()" />
     </template>
     <template #2>
       <n-tabs default-value="1" style="padding-left: 10px">
