@@ -4,7 +4,7 @@ import { storeToRefs } from 'pinia'
 import Welcome from '@/views/Welcome.vue'
 import { MoreVertRound, CloseRound } from '@vicons/material'
 import { AutoAwesomeRound } from '@vicons/material'
-import { computed, h } from 'vue'
+import { computed } from 'vue'
 import { renderIcon } from '@/utils/icon.js'
 import { NIcon } from 'naive-ui'
 
@@ -12,11 +12,11 @@ const tabStore = useTabStore()
 
 const { tabList, activeTab } = storeToRefs(tabStore)
 
-const options = computed(() => {
+const suffixOptions = computed(() => {
   const tabs = [{ label: '关闭所有', key: 'close-all', icon: renderIcon(CloseRound) }]
 
   if (tabs.length > 0) {
-    tabs.push({ type: 'divider', key: 'right-options-divider' })
+    tabs.push({ label: 'divider', type: 'divider', key: 'right-options-divider' })
   }
 
   tabList.value.forEach((tab) => {
@@ -25,15 +25,7 @@ const options = computed(() => {
       label: tab.label,
     }
     if (tab.name === activeTab.value) {
-      obj.icon = () => {
-        return h(
-          NIcon,
-          { color: 'green', size: 20 },
-          {
-            default: () => h(AutoAwesomeRound),
-          },
-        )
-      }
+      obj.icon = renderIcon(AutoAwesomeRound, { color: 'green', size: 20 })
     }
     tabs.push(obj)
   })
@@ -72,14 +64,14 @@ function handleSelect(key) {
         closable
       >
         <template #tab>
-          <n-popover trigger="hover" :delay="500">
+          <n-tooltip trigger="hover" :delay="500">
             <template #trigger>
               <span>{{ tab.label }}</span>
             </template>
             <p>数据源：{{ tab.label }}</p>
             <p>类型：MySQL</p>
             <p>URL：jdbc:mysql//1.2.3.09:3306</p>
-          </n-popover>
+          </n-tooltip>
         </template>
 
         <!-- tab 页面内容组件 -->
@@ -92,7 +84,7 @@ function handleSelect(key) {
           size="small"
           style="max-height: 300px; overflow: auto"
           trigger="click"
-          :options="options"
+          :options="suffixOptions"
           @select="handleSelect"
         >
           <n-icon size="20" style="margin-right: 12px; cursor: pointer">

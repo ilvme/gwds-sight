@@ -1,5 +1,4 @@
 <script setup>
-import { RefreshOutlined, PlusOutlined, MinusOutlined } from '@vicons/material'
 import {
   ArrowCircleUpFilled,
   KeyboardDoubleArrowLeftFilled,
@@ -7,6 +6,9 @@ import {
   KeyboardArrowLeftFilled,
   KeyboardArrowRightRound,
   KeyboardArrowDownRound,
+  RefreshOutlined,
+  PlusOutlined,
+  MinusOutlined,
 } from '@vicons/material'
 import { NIcon } from 'naive-ui'
 import { computed, ref } from 'vue'
@@ -127,9 +129,7 @@ const columns = ref([
           style="width: 300px"
           size="small"
           v-model:value="searchCondition"
-          :input-props="{
-            autocomplete: 'disabled',
-          }"
+          :input-props="{ autocomplete: 'disabled' }"
           :options="tipOption"
           clearable
         />
@@ -140,9 +140,7 @@ const columns = ref([
           style="width: 300px"
           size="small"
           v-model:value="searchCondition"
-          :input-props="{
-            autocomplete: 'disabled',
-          }"
+          :input-props="{ autocomplete: 'disabled' }"
           :options="tipOption"
           clearable
         />
