@@ -15,6 +15,7 @@ import {
   DeleteSweepRound,
   RefreshRound,
   CheckRound,
+  ViewListRound,
 } from '@vicons/material'
 import { useResizeObserver } from '@vueuse/core'
 import { NIcon } from 'naive-ui'
@@ -30,20 +31,21 @@ self.MonacoEnvironment = {
 
 const keyId = useId()
 
-// 注册SQL关键字提示
-// 这个是自定义的表字段数据
+// 注册 SQL 关键字提示，这个是自定义的表字段数据
 const fieldsArr = [
   // type 区分关键字和字段
   { type: 'Field', value: 'name' },
   { type: 'Field', value: 'age' },
   { type: 'Field', value: 'sex' },
 ]
+
 const editorRef = ref(null)
 const editor = ref(null)
+
 onMounted(async () => {
   // 注册自定义关键字提示
   monaco.languages.registerCompletionItemProvider('sql', {
-    provideCompletionItems: (model, position) => {
+    provideCompletionItems: () => {
       let suggestions = []
       // 再把内置的关键字数据处理下
       const temp = language.keywords.map((item) => {
@@ -114,14 +116,31 @@ onMounted(async () => {
   })
 })
 
+// 当前数据源
+const currentDatasource = ref(null)
+const datasourceOptions = ref([
+  { label: 'gbase@localhost', value: 'gbase' },
+  { label: 'mysql@2.4.32.123', value: 'db_dms' },
+  { label: 'sqlite@32.234.54.1', value: 'gdom' },
+])
+function renderDatasourceLabel(option) {
+  return h(
+    'div',
+    {
+      style: { display: 'flex', alignItems: 'center', gap: '5px' },
+    },
+    [renderIcon(ViewListRound)(), option.label],
+  )
+}
+
+// 当前数据库
 const currentDatabase = ref(null)
 const databaseOptions = ref([
   { label: 'gbase', value: 'gbase' },
   { label: 'db_dms', value: 'db_dms' },
   { label: 'gdom', value: 'gdom' },
 ])
-
-function renderLabel(option) {
+function renderDatabaseLabel(option) {
   return h(
     'div',
     {
@@ -130,6 +149,8 @@ function renderLabel(option) {
     [renderIcon(TableRowsRound)(), option.label],
   )
 }
+
+// 操作栏更多选项
 const editorOtherOptions = [
   { label: '保存到我的 SQL', key: 'profile', icon: renderIcon(SaveRound) },
   { type: 'divider', key: useId() },
@@ -158,7 +179,6 @@ function formatSQL() {
       <n-flex>
         <n-select
           style="width: 100px"
-          placeholder="选择数据库"
           v-model:value="autoCommit"
           size="tiny"
           :options="commitOptions"
@@ -183,6 +203,7 @@ function formatSQL() {
         </div>
 
         <n-divider vertical />
+
         <n-tooltip trigger="hover" :delay="500">
           <template #trigger>
             <n-button size="tiny" type="primary">
@@ -211,20 +232,22 @@ function formatSQL() {
         </n-tooltip>
 
         <n-dropdown :options="editorOtherOptions" size="small">
-          <n-button size="tiny" secondary style="display: flex; align-items: center">
+          <n-button size="tiny" secondary>
             <n-icon size="18"> <MoreHorizRound /> </n-icon>
           </n-button>
         </n-dropdown>
       </n-flex>
+
+      <!-- 数据源、数据库选择框 -->
       <n-flex>
         <n-select
           style="width: 200px"
           placeholder="选择数据源"
-          v-model:value="currentDatabase"
+          v-model:value="currentDatasource"
           size="tiny"
           filterable
-          :render-label="renderLabel"
-          :options="databaseOptions"
+          :render-label="renderDatasourceLabel"
+          :options="datasourceOptions"
         />
         <n-select
           style="width: 180px"
@@ -232,7 +255,7 @@ function formatSQL() {
           v-model:value="currentDatabase"
           size="tiny"
           filterable
-          :render-label="renderLabel"
+          :render-label="renderDatabaseLabel"
           :options="databaseOptions"
         />
       </n-flex>
@@ -254,11 +277,6 @@ function formatSQL() {
 </template>
 
 <style scoped>
-.commit:hover {
-  cursor: default;
-  border: 1px salmon solid;
-}
-
 :deep(.n-divider.n-divider--vertical) {
   width: 2px;
   height: 20px;
