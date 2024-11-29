@@ -1,5 +1,5 @@
 <script setup>
-import { RouterView } from 'vue-router'
+import Layout from '@/layout/index.vue'
 
 // TODO 优化
 const themeOverrides = {
@@ -16,7 +16,7 @@ const themeOverrides = {
   <n-config-provider :theme-overrides="themeOverrides">
     <n-notification-provider>
       <n-message-provider>
-        <RouterView />
+        <Layout />
       </n-message-provider>
     </n-notification-provider>
   </n-config-provider>
