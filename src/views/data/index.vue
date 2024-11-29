@@ -10,6 +10,9 @@ import {
 } from '@vicons/material'
 import { NIcon } from 'naive-ui'
 import { computed, ref } from 'vue'
+
+defineOptions({ name: 'DataOperation' })
+
 const options = [
   { label: 10, key: 10 },
   { label: 20, key: 20 },

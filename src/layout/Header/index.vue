@@ -1,57 +1,18 @@
 <script setup>
-import { h, useTemplateRef } from 'vue'
-import { useMessage } from 'naive-ui'
-import {
-  SettingsRound,
-  LogOutRound,
-  PostAddRound,
-  CloudUploadRound,
-  OpenInNewRound,
-  PermDataSettingSharp,
-  PersonRound,
-  KeyboardRound,
-  AssignmentRound,
-  BugReportRound,
-  BookmarkRound,
-} from '@vicons/material'
-import { HelpFilled } from '@vicons/material'
+import { useTemplateRef } from 'vue'
 import Preferences from '@/views/preferences/index.vue'
 import DatasourceCreator from '@/views/datasource/create.vue'
 import { useTabStore } from '@/stores/tab.js'
 import { nanoid } from 'nanoid'
-import { renderIcon } from '@/utils/icon.js'
+import { NAV_MENUS } from '@/utils/menus/nav.js'
+import { Toast } from '@/utils/Layer.js'
 
-const options1 = [
-  { label: '首选项', key: 'preferences', icon: renderIcon(SettingsRound) },
-  { label: '新窗口打开', key: '2', icon: renderIcon(OpenInNewRound) },
-  { type: 'divider' },
-  { label: '退出', key: 'logout', icon: renderIcon(LogOutRound) },
-]
-
-const options2 = [
-  { label: '新建数据源', key: 'datasource-create', icon: renderIcon(PostAddRound) },
-  { label: '驱动管理', key: 'the b', icon: renderIcon(PermDataSettingSharp) },
-]
-
-const options3 = [
-  { label: 'SQL 模板', key: 'marina bay sands', icon: renderIcon(AssignmentRound) },
-  { label: '我的 SQL', key: "brown's hostel, london", icon: renderIcon(BookmarkRound) },
-  { label: '导入导出', key: 'atlantis nahamas, nassau', icon: renderIcon(CloudUploadRound) },
-]
-
-const options4 = [
-  { label: '关于', key: "brown's hos n", icon: renderIcon(PersonRound) },
-  { label: '帮助', key: 'marina bay sands', icon: renderIcon(HelpFilled) },
-  { type: 'divider' },
-  { label: '快捷键', key: 'atlantis, nassau', icon: renderIcon(KeyboardRound) },
-  { type: 'divider' },
-  { label: '报个 Bug', key: 'bug', icon: renderIcon(BugReportRound) },
-]
-const message = useMessage()
 const preferencesRef = useTemplateRef('preferencesRef')
 const datasourceCreatorRef = useTemplateRef('datasourceCreatorRef')
+
+const { addTab } = useTabStore()
+
 function handleSelect(key) {
-  console.log(key)
   switch (key) {
     case 'preferences':
       preferencesRef.value.openModal()
@@ -59,21 +20,19 @@ function handleSelect(key) {
     case 'datasource-create':
       datasourceCreatorRef.value.openModal()
       break
+    case 'nav-sql-console':
+      addTab({
+        label: 'SQL 编辑器[mysql@localhost]',
+        name: nanoid(),
+        props: {
+          type: 'SQL_CONSOLE',
+          age: 18,
+        },
+      })
+      break
     default:
-      message.success('你惦记了' + key)
+      Toast.success('你点击⚡️了' + key)
   }
-}
-
-const tabStore = useTabStore()
-const testTab = () => {
-  tabStore.addTab({
-    label: 'SQL 编辑器[mysql@localhost]',
-    name: nanoid(),
-    props: {
-      type: 'SQL_CONSOLE',
-      age: 18,
-    },
-  })
 }
 </script>
 
@@ -82,21 +41,18 @@ const testTab = () => {
     <div class="logo">GWDS</div>
 
     <nav>
-      <n-dropdown size="small" trigger="hover" :options="options1" @select="handleSelect">
-        文件
+      <n-dropdown
+        size="small"
+        trigger="hover"
+        :key="menu.title"
+        v-for="menu in NAV_MENUS"
+        :options="menu.options"
+        @select="handleSelect"
+      >
+        <span class="menu-title">
+          {{ menu.title }}
+        </span>
       </n-dropdown>
-      <n-dropdown size="small" trigger="hover" :options="options2" @select="handleSelect">
-        数据库
-      </n-dropdown>
-      <n-dropdown size="small" trigger="hover" :options="options3" @select="handleSelect">
-        SQL
-      </n-dropdown>
-      <n-dropdown size="small" trigger="hover" :options="options4" @select="handleSelect">
-        帮助
-      </n-dropdown>
-      <n-text @click="testTab" style="cursor: pointer">
-        <span style="color: white">Tab 页面测试</span>
-      </n-text>
     </nav>
 
     <!-- 首选项弹窗 -->
@@ -127,5 +83,11 @@ nav {
   gap: 20px;
   margin-left: 40px;
   font-size: 1.2em;
+}
+.menu-title {
+  cursor: default;
+}
+.menu-title:hover {
+  color: salmon;
 }
 </style>

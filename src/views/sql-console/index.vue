@@ -1,12 +1,7 @@
 <script setup>
 import SQLEditor from '@/views/sql-console/components/SQLEditor.vue'
 import { ref, useId } from 'vue'
-const data = ref([])
-const columns = ref([
-  { title: 'Name', key: 'name' },
-  { title: 'Age', key: 'age' },
-  { title: 'Address', key: 'address' },
-])
+import DataOperation from '@/views/data/index.vue'
 </script>
 
 <template>
@@ -18,7 +13,7 @@ const columns = ref([
       <n-tabs default-value="1" style="padding-left: 10px">
         <n-tab-pane name="1" tab="执行信息"><p>> 执行 1 条 SQL, 耗时 34 毫秒。</p> </n-tab-pane>
         <n-tab-pane name="2" tab="t_user">
-          <n-data-table size="small" :columns="columns" :data="data" :bordered="false" />
+          <DataOperation />
         </n-tab-pane>
       </n-tabs>
     </template>
