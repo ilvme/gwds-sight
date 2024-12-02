@@ -1,11 +1,12 @@
 <script setup>
-import { useTemplateRef } from 'vue'
+import { computed, ref, useTemplateRef } from 'vue'
 import Preferences from '@/views/preferences/index.vue'
 import DatasourceCreator from '@/views/datasource/create.vue'
 import { useTabStore } from '@/stores/tab.js'
 import { nanoid } from 'nanoid'
 import { NAV_MENUS } from '@/utils/menus/nav.js'
 import { Toast } from '@/utils/Layer.js'
+import { AutoAwesomeRound } from '@vicons/material'
 
 const preferencesRef = useTemplateRef('preferencesRef')
 const datasourceCreatorRef = useTemplateRef('datasourceCreatorRef')
@@ -34,26 +35,65 @@ function handleSelect(key) {
       Toast.success('你点击⚡️了' + key)
   }
 }
+
+// 多语言支持
+
+const language = ref('zh-CN')
+function handleLangChange(val) {
+  language.value = val
+}
+
+const langText = computed(() => {
+  switch (language.value) {
+    case 'zh-CN':
+      return '简'
+    case 'en-US':
+      return 'En'
+    default:
+      return '未知'
+  }
+})
 </script>
 
 <template>
   <header class="header">
-    <div class="logo">GWDS</div>
+    <n-flex align="center">
+      <n-flex justify="center" align="center" size="small" class="logo">
+        <n-icon><AutoAwesomeRound /> </n-icon>GWDS
+      </n-flex>
 
-    <nav>
-      <n-dropdown
-        size="small"
+      <nav>
+        <n-dropdown
+          size="small"
+          trigger="hover"
+          :key="menu.title"
+          v-for="menu in NAV_MENUS"
+          :options="menu.options"
+          @select="handleSelect"
+        >
+          <span class="menu-title">
+            {{ menu.title }}
+          </span>
+        </n-dropdown>
+      </nav>
+    </n-flex>
+
+    <!-- 快捷操作区域 -->
+    <n-dropdown
+      :options="[
+        { label: '中文简体', key: 'zh-CN' },
+        { label: 'English', key: 'en-US' },
+      ]"
+      @select="handleLangChange"
+      :value="language"
+    >
+      <n-text
+        style="margin-right: 20px; color: white; font-size: 18px; cursor: pointer"
         trigger="hover"
-        :key="menu.title"
-        v-for="menu in NAV_MENUS"
-        :options="menu.options"
-        @select="handleSelect"
       >
-        <span class="menu-title">
-          {{ menu.title }}
-        </span>
-      </n-dropdown>
-    </nav>
+        {{ langText }}
+      </n-text>
+    </n-dropdown>
 
     <!-- 首选项弹窗 -->
     <Preferences ref="preferencesRef" />
@@ -69,6 +109,7 @@ function handleSelect(key) {
   background-color: #2c2c2c;
   color: white;
   display: flex;
+  justify-content: space-between;
   align-items: center;
 }
 
