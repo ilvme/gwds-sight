@@ -1,7 +1,7 @@
 <script setup>
 import { ref, useTemplateRef } from 'vue'
 import { RefreshOutlined } from '@vicons/material'
-import { treeRightClickMappings } from '@/utils/menus/table.js'
+import { treeRightClickMappings } from '@/utils/menus/treeRightClickMappings.js'
 import TableCreatorAndEditor from '@/views/table/create.vue'
 import DatasourceCreator from '@/views/datasource/create.vue'
 import { Toast } from '@/utils/Layer.js'
