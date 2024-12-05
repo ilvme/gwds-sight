@@ -3,6 +3,7 @@ import { defineStore } from 'pinia'
 
 import DataOperation from '@/views/data/index.vue'
 import SQLConsole from '@/views/sql-console/index.vue'
+import { Toast } from '@/utils/Layer.js'
 
 export const useTabStore = defineStore('tab', () => {
   const tabList = ref([])
@@ -16,7 +17,7 @@ export const useTabStore = defineStore('tab', () => {
    */
   async function addTab({ label, name, props }) {
     if (tabList.value.length >= 12) {
-      window.$message.warning('您开了太多标签页了，请先关闭一些不使用的吧！')
+      Toast.warning('您开了太多标签页了，请先关闭一些不使用的吧！')
       return
     }
     tabList.value.push({

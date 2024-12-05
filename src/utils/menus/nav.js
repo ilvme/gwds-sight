@@ -1,7 +1,6 @@
 import { renderIcon } from '@/utils/icon.js'
 import {
   AssignmentRound,
-  BookmarkRound,
   BugReportRound,
   CloudUploadRound,
   HelpFilled,
@@ -38,7 +37,6 @@ export const NAV_MENUS = [
       { label: '新建 SQL 编辑器', key: 'nav-sql-console', icon: renderIcon(CasinoRound) },
       { type: 'divider' },
       { label: 'SQL 模板', key: 'marina bay sands', icon: renderIcon(AssignmentRound) },
-      { label: '我的 SQL', key: "brown's hostel, london", icon: renderIcon(BookmarkRound) },
       { type: 'divider' },
       { label: '导入导出', key: 'atlantis nahamas, nassau', icon: renderIcon(CloudUploadRound) },
     ],

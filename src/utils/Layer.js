@@ -18,3 +18,5 @@ export const Toast = {
     window.$message.warning(message)
   },
 }
+
+export const Layer = {}

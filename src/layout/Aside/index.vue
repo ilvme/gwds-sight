@@ -1,10 +1,11 @@
 <script setup>
 import { ref, useTemplateRef } from 'vue'
 import { RefreshOutlined } from '@vicons/material'
-import { treeData, treeRightClickMappings } from '@/utils/table.js'
+import { treeRightClickMappings } from '@/utils/menus/table.js'
 import TableCreatorAndEditor from '@/views/table/create.vue'
 import DatasourceCreator from '@/views/datasource/create.vue'
 import { Toast } from '@/utils/Layer.js'
+import { treeData } from '@/mock/tree.js'
 
 const data = ref(treeData)
 
@@ -12,14 +13,11 @@ const filterText = ref('')
 function refreshTree() {
   Toast.info('刷新树')
 }
+
+// 当前点击的树节点
 const currentClickNode = ref(null)
 
 const showDropdown = ref(false)
-
-// 根据右键的 key 不同需返回不同的菜单
-const rightOptions = ref([])
-const xRef = ref(0)
-const yRef = ref(0)
 
 const tableCreatorAndEditorRef = useTemplateRef('tableCreatorAndEditorRef')
 const datasourceCreatorRef = useTemplateRef('datasourceCreatorRef')
@@ -37,9 +35,11 @@ const handleSelect = (key) => {
   }
   showDropdown.value = false
 }
-const handleClickOutside = () => {
-  showDropdown.value = false
-}
+
+// 根据右键的 key 不同需返回不同的菜单
+const rightOptions = ref([])
+const xRef = ref(0)
+const yRef = ref(0)
 const nodeProps = ({ option }) => {
   return {
     onClick() {
@@ -66,6 +66,10 @@ const nodeProps = ({ option }) => {
     },
   }
 }
+
+function clickOutside() {
+  showDropdown.value = false
+}
 </script>
 
 <template>
@@ -82,6 +86,7 @@ const nodeProps = ({ option }) => {
       </n-button>
     </n-flex>
 
+    <!-- 树 -->
     <n-tree
       virtual-scroll
       block-line
@@ -92,7 +97,7 @@ const nodeProps = ({ option }) => {
       style="height: calc(100vh - 50px)"
       class="tree"
     />
-    <!-- 右键菜单 -->
+    <!-- 树右键菜单 -->
     <n-dropdown
       size="small"
       trigger="manual"
@@ -102,7 +107,7 @@ const nodeProps = ({ option }) => {
       :x="xRef"
       :y="yRef"
       @select="handleSelect"
-      @clickoutside="handleClickOutside"
+      @clickoutside="clickOutside"
     />
 
     <!-- 创建表 -->

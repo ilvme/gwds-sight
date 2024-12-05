@@ -1,17 +1,16 @@
 import {
-  TableRowsRound,
-  TableChartOutlined,
-  FolderRound,
   CastConnectedRound,
-  InfoRound,
-  TableViewRound,
-  ViewListRound,
+  FolderRound,
   FunctionsRound,
-  VerifiedUserRound,
-  WindowRound,
   GppGoodRound,
+  InfoRound,
+  TableChartOutlined,
+  TableRowsRound,
+  TableViewRound,
+  VerifiedUserRound,
+  ViewListRound,
+  WindowRound,
 } from '@vicons/material'
-import { TREE_RIGHT_CLICK_MENUS } from '@/utils/rightClick.js'
 import { nanoid } from 'nanoid'
 import { renderIcon } from '@/utils/icon.js'
 
@@ -29,7 +28,7 @@ const buildTableList = (count, icon = TableChartOutlined) => {
 
 export const treeData = [
   {
-    key: nanoid(),
+    key: '1-1',
     label: 'mysql@1.2.3.09',
     prefix: renderIcon(ViewListRound, { size: 18 }),
     children: [
@@ -253,13 +252,3 @@ export const treeData = [
     ],
   },
 ]
-
-export const treeRightClickMappings = {
-  DATASOURCE: [
-    TREE_RIGHT_CLICK_MENUS.DATASOURCE_CREATE,
-    TREE_RIGHT_CLICK_MENUS.DATASOURCE_EDIT,
-    TREE_RIGHT_CLICK_MENUS.DATASOURCE_RENAME,
-    TREE_RIGHT_CLICK_MENUS.DIVIDER,
-    TREE_RIGHT_CLICK_MENUS.DATASOURCE_REFRESH,
-  ],
-}
