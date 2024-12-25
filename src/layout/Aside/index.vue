@@ -1,18 +1,19 @@
 <script setup>
-import { ref, useTemplateRef } from 'vue'
-import { RefreshOutlined } from '@vicons/material'
+import { onMounted, ref, useTemplateRef } from 'vue'
 import { treeRightClickMappings } from '@/utils/menus/treeRightClickMappings.js'
 import TableCreatorAndEditor from '@/views/table/create.vue'
 import DatasourceCreator from '@/views/datasource/create.vue'
 import { Toast } from '@/utils/Layer.js'
-import { treeData } from '@/mock/tree.js'
+import { fetchTree } from '@/api/tree.js'
 
-const data = ref(treeData)
+// const data = ref(treeData)
+const data = ref([])
 
-const filterText = ref('')
-function refreshTree() {
-  Toast.info('刷新树')
-}
+onMounted(async () => {
+  const res = await fetchTree()
+  data.value = res.data
+  console.log(res.data)
+})
 
 // 当前点击的树节点
 const currentClickNode = ref(null)
@@ -42,6 +43,7 @@ const xRef = ref(0)
 const yRef = ref(0)
 const nodeProps = ({ option }) => {
   return {
+    isLeaf: option.isLeaf || option.children === null,
     onClick() {
       currentClickNode.value = option
       Toast.info(`[Click] ${option.label}`)
@@ -70,32 +72,23 @@ const nodeProps = ({ option }) => {
 function clickOutside() {
   showDropdown.value = false
 }
+
+const handleLoad = async (node) => {
+  console.log('load', node.key)
+  const { data } = await fetchTree(1, node)
+  console.log(data)
+  node.children = data
+}
 </script>
 
 <template>
-  <aside style="display: flex; flex-direction: column; height: calc(100vh - 50px)">
-    <n-flex style="padding: 5px 10px" align="center" justify="space-between">
-      <n-input
-        size="small"
-        v-model:value="filterText"
-        placeholder="快速搜索"
-        style="width: 200px"
-      />
-      <n-button circle quaternary @click="refreshTree">
-        <n-icon size="20"><RefreshOutlined /></n-icon>
-      </n-button>
-    </n-flex>
-
-    <!-- 树 -->
+  <aside style="height: calc(100vh - 50px)">
     <n-tree
-      virtual-scroll
-      block-line
-      :data="data"
-      :pattern="filterText"
-      :show-irrelevant-nodes="false"
-      :node-props="nodeProps"
-      style="height: calc(100vh - 50px)"
       class="tree"
+      @load="handleLoad"
+      check-strategy="child"
+      :data="data"
+      :node-props="nodeProps"
     />
     <!-- 树右键菜单 -->
     <n-dropdown
@@ -120,11 +113,11 @@ function clickOutside() {
 
 <style scoped>
 .tree {
-  //flex: 1;
   width: 100%;
   max-width: 100%;
-
-  overflow-x: auto;
+  height: 100%;
+  padding: 2px 10px;
+  overflow: auto;
 }
 
 :deep(.n-tree .n-tree-node-content) {
@@ -135,11 +128,6 @@ function clickOutside() {
 }
 :deep(.n-tree .n-tree-node-content .n-tree-node-content__prefix) {
   margin-right: 5px;
-}
-
-:deep(.n-tree .n-tree-node.n-tree-node--highlight .n-tree-node-content .n-tree-node-content__text) {
-  //font-weight: bold;
-  background-color: #ffffd2;
 }
 
 :deep(
