@@ -47,7 +47,7 @@ const editorRef = ref(null)
 const editor = ref(null)
 
 onMounted(async () => {
-  currentDatasource.value = props.sourceNode.key
+  currentDatasource.value = props.sourceNode?.key
 
   // 注册自定义关键字提示
   monaco.languages.registerCompletionItemProvider('sql', {
