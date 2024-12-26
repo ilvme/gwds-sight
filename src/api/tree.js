@@ -1,7 +1,7 @@
-import axios from 'axios'
+import fetcher from '@/utils/request.js'
 
 export const fetchTree = (datasourceId = null, node = null) =>
-  axios.post('api/tree', {
+  fetcher.post('/tree', {
     datasourceId,
     parent: node,
   })

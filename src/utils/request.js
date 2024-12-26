@@ -1,20 +1,29 @@
 // 封装 axios
 import axios from 'axios'
+import { Layer } from '@/utils/Layer.js'
 
-axios.defaults.baseURL = import.meta.env.VITE_API_BASEURL ?? 'http://localhost:8080/'
-axios.defaults.timeout = 10000
-axios.defaults.headers.post['Content-Type'] = 'application/json'
+const fetcher = axios.create({
+  baseURL: '/api',
+  timeout: 10000,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+})
 
-axios.interceptors.request.use(
+fetcher.interceptors.request.use(
   (config) => {
     return config
   },
   (error) => Promise.reject(error),
 )
-axios.interceptors.response.use(
+fetcher.interceptors.response.use(
   (response) => {
-    return response
+    if (response.data.code === 0) {
+      return response.data
+    } else {
+      Layer.error(response.data.message)
+    }
   },
   (error) => Promise.reject(error),
 )
-export default axios
+export default fetcher
