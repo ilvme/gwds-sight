@@ -1,7 +1,16 @@
 <script setup>
 import SQLEditor from '@/views/sql-console/components/SQLEditor.vue'
-import { useId } from 'vue'
+import { ref, useId } from 'vue'
 import DataOperation from '@/views/data/index.vue'
+import { useTabStore } from '@/stores/tab.js'
+import { storeToRefs } from 'pinia'
+
+const tabStore = useTabStore()
+const { tabList, activeTab } = storeToRefs(tabStore)
+
+const initSourceNode = ref()
+const { sourceNode } = tabList.value.find((item) => item.name === activeTab.value).props
+initSourceNode.value = sourceNode
 </script>
 
 <template>
@@ -13,7 +22,7 @@ import DataOperation from '@/views/data/index.vue'
     default-size="360px"
   >
     <template #1>
-      <SQLEditor ref="sqlEditorRef" :key="useId()" />
+      <SQLEditor ref="sqlEditorRef" :key="useId()" :sourceNode="initSourceNode" />
     </template>
     <template #2>
       <n-tabs default-value="1" style="padding-left: 10px">

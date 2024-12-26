@@ -5,16 +5,16 @@ import EditorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker'
 import { language } from 'monaco-editor/esm/vs/basic-languages/sql/sql'
 import { format } from 'sql-formatter'
 import {
-  PlayArrowRound,
-  TableRowsRound,
-  MoreHorizRound,
-  CloudUploadRound,
-  ShareFilled,
-  SaveRound,
   AutoFixHighRound,
-  DeleteSweepRound,
-  RefreshRound,
   CheckRound,
+  CloudUploadRound,
+  DeleteSweepRound,
+  MoreHorizRound,
+  PlayArrowRound,
+  RefreshRound,
+  SaveRound,
+  ShareFilled,
+  TableRowsRound,
   ViewListRound,
 } from '@vicons/material'
 import { useResizeObserver } from '@vueuse/core'
@@ -22,6 +22,10 @@ import { NIcon } from 'naive-ui'
 import { renderIcon } from '@/utils/icon.js'
 
 defineOptions({ name: 'SQLEditor' })
+
+const props = defineProps({
+  sourceNode: Object,
+})
 
 self.MonacoEnvironment = {
   getWorker() {
@@ -43,6 +47,8 @@ const editorRef = ref(null)
 const editor = ref(null)
 
 onMounted(async () => {
+  currentDatasource.value = props.sourceNode.key
+
   // 注册自定义关键字提示
   monaco.languages.registerCompletionItemProvider('sql', {
     provideCompletionItems: () => {
@@ -66,7 +72,7 @@ onMounted(async () => {
   })
 
   // 编辑器初始化
-  editor.value = await monaco.editor.create(document.getElementById(`editor_container_` + keyId), {
+  editor.value = monaco.editor.create(document.getElementById(`editor_container_` + keyId), {
     automaticLayout: true,
     minimap: { enabled: false }, // 关闭小地图
     tabSize: 2,
@@ -120,7 +126,7 @@ onMounted(async () => {
 const currentDatasource = ref(null)
 const datasourceOptions = ref([
   { label: 'gbase@localhost', value: 'gbase' },
-  { label: 'mysql@2.4.32.123', value: 'db_dms' },
+  { label: 'mysql@2.4.32.123', value: 'ds-1' },
   { label: 'sqlite@32.234.54.1', value: 'gdom' },
 ])
 function renderDatasourceLabel(option) {

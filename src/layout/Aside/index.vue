@@ -1,12 +1,14 @@
 <script setup>
 import { onMounted, ref, useTemplateRef } from 'vue'
-import { treeRightClickMappings } from '@/utils/menus/treeRightClickMappings.js'
+import { getMenuByNodeType } from '@/utils/menus/tree.js'
 import TableCreatorAndEditor from '@/views/table/create.vue'
 import DatasourceCreator from '@/views/datasource/create.vue'
 import { Toast } from '@/utils/Layer.js'
 import { fetchTree } from '@/api/tree.js'
 import { getTreeIconByNodeType, renderIcon } from '@/utils/icon.js'
 import { ViewListRound } from '@vicons/material'
+import { useTabStore } from '@/stores/tab.js'
+import { nanoid } from 'nanoid'
 
 // const data = ref(treeData)
 const data = ref([])
@@ -24,6 +26,8 @@ const currentClickNode = ref(null)
 
 const showDropdown = ref(false)
 
+const { addTab } = useTabStore()
+
 const tableCreatorAndEditorRef = useTemplateRef('tableCreatorAndEditorRef')
 const datasourceCreatorRef = useTemplateRef('datasourceCreatorRef')
 const handleSelect = (key) => {
@@ -34,6 +38,16 @@ const handleSelect = (key) => {
       break
     case 'DATASOURCE_CREATE':
       datasourceCreatorRef.value.openModal()
+      break
+    case 'SQL_CONSOLE':
+      addTab({
+        label: 'SQL 编辑器[mysql@localhost]',
+        name: nanoid(),
+        props: {
+          type: 'SQL_CONSOLE',
+          sourceNode: currentClickNode.value,
+        },
+      })
       break
     default:
       Toast.success(key)
@@ -54,16 +68,7 @@ const nodeProps = ({ option }) => {
     },
     onContextmenu(e) {
       currentClickNode.value = option
-      if (option.key.startsWith('1-')) {
-        rightOptions.value = treeRightClickMappings.DATASOURCE
-      } else {
-        rightOptions.value = [
-          { label: '创建表', key: 'TABLE_CREATE' },
-          { label: '查看', key: 'COMMON_SHOW' },
-          { key: '11', type: 'divider' },
-          { label: '刷新', key: 'COMMON_REFRESH' },
-        ]
-      }
+      rightOptions.value = getMenuByNodeType(option)
       showDropdown.value = true
       xRef.value = e.clientX
       yRef.value = e.clientY
@@ -77,6 +82,7 @@ function clickOutside() {
   showDropdown.value = false
 }
 
+// 懒加载
 const handleLoad = async (node) => {
   console.log('load', node.key)
   const { data } = await fetchTree(1, node)
