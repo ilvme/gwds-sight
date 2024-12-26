@@ -5,14 +5,18 @@ import TableCreatorAndEditor from '@/views/table/create.vue'
 import DatasourceCreator from '@/views/datasource/create.vue'
 import { Toast } from '@/utils/Layer.js'
 import { fetchTree } from '@/api/tree.js'
+import { getTreeIconByNodeType, renderIcon } from '@/utils/icon.js'
+import { ViewListRound } from '@vicons/material'
 
 // const data = ref(treeData)
 const data = ref([])
 
 onMounted(async () => {
   const res = await fetchTree()
+  res.data.forEach((item) => {
+    item.prefix = renderIcon(ViewListRound, { size: 18 })
+  })
   data.value = res.data
-  console.log(res.data)
 })
 
 // 当前点击的树节点
@@ -43,7 +47,7 @@ const xRef = ref(0)
 const yRef = ref(0)
 const nodeProps = ({ option }) => {
   return {
-    isLeaf: option.isLeaf || option.children === null,
+    // isLeaf: option.isLeaf || option.children === null,
     onClick() {
       currentClickNode.value = option
       Toast.info(`[Click] ${option.label}`)
@@ -76,7 +80,9 @@ function clickOutside() {
 const handleLoad = async (node) => {
   console.log('load', node.key)
   const { data } = await fetchTree(1, node)
-  console.log(data)
+  data.forEach((item) => {
+    item.prefix = renderIcon(getTreeIconByNodeType(item))
+  })
   node.children = data
 }
 </script>
