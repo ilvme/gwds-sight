@@ -85,7 +85,9 @@ function clickOutside() {
 // 懒加载
 const handleLoad = async (node) => {
   console.log('load', node.key)
-  const { data } = await fetchTree(1, node)
+  // 将 node.key 按照 - 切割
+  const arr = node.key.split('-')
+  const { data } = await fetchTree(arr[arr.length - 1], node)
   data.forEach((item) => {
     item.prefix = renderIcon(getTreeIconByNodeType(item))
   })
@@ -99,7 +101,7 @@ const handleLoad = async (node) => {
       class="tree"
       @load="handleLoad"
       check-strategy="child"
-      block-line
+      show-line
       :data="data"
       :node-props="nodeProps"
     >
