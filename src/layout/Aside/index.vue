@@ -128,7 +128,7 @@ const handleLoad = async (node) => {
   width: 100%;
   max-width: 100%;
   height: 100%;
-  padding: 2px 10px;
+  padding: 2px 10px 2px 0;
   overflow: auto;
 }
 
