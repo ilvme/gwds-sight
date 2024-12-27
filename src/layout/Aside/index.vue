@@ -101,7 +101,11 @@ const handleLoad = async (node) => {
       check-strategy="child"
       :data="data"
       :node-props="nodeProps"
-    />
+    >
+      <template #empty>
+        <n-empty description="请先新建一个数据源吧" />
+      </template>
+    </n-tree>
     <!-- 树右键菜单 -->
     <n-dropdown
       size="small"
@@ -130,6 +134,9 @@ const handleLoad = async (node) => {
   height: 100%;
   padding: 2px 10px 2px 0;
   overflow: auto;
+}
+:deep(.n-tree-node-indent) {
+  width: 16px;
 }
 
 :deep(.n-tree .n-tree-node-content) {
