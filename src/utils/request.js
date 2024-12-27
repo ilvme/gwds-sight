@@ -4,7 +4,7 @@ import { Layer } from '@/utils/Layer.js'
 
 const fetcher = axios.create({
   baseURL: '/api',
-  timeout: 10000,
+  timeout: 60000,
   headers: {
     'Content-Type': 'application/json',
   },

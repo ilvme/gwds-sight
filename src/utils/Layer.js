@@ -19,4 +19,13 @@ export const Toast = {
   },
 }
 
-export const Layer = {}
+export const Layer = {
+  error(content) {
+    window.$notification.error({
+      content,
+      title: '系统提示',
+      duration: 2500,
+      keepAliveOnHover: true,
+    })
+  },
+}

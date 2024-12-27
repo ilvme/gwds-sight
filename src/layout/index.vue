@@ -2,9 +2,10 @@
 import Header from './Header/index.vue'
 import Aside from './Aside/index.vue'
 import Main from './Main/index.vue'
-import { useMessage } from 'naive-ui'
+import { useMessage, useNotification } from 'naive-ui'
 
 window.$message = useMessage()
+window.$notification = useNotification()
 </script>
 
 <template>
@@ -15,8 +16,8 @@ window.$message = useMessage()
       direction="horizontal"
       style="height: calc(100vh - 50px)"
       :max="0.6"
-      min="200px"
-      default-size="300px"
+      min="280px"
+      default-size="320px"
     >
       <template #1>
         <Aside />
