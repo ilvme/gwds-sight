@@ -99,6 +99,7 @@ const handleLoad = async (node) => {
       class="tree"
       @load="handleLoad"
       check-strategy="child"
+      block-line
       :data="data"
       :node-props="nodeProps"
     >
@@ -132,15 +133,13 @@ const handleLoad = async (node) => {
   width: 100%;
   max-width: 100%;
   height: 100%;
-  padding: 2px 10px 2px 0;
   overflow: auto;
 }
 :deep(.n-tree-node-indent) {
-  width: 16px;
+  width: 18px;
 }
-
 :deep(.n-tree .n-tree-node-content) {
-  padding: 0;
+  padding: 2px;
 }
 :deep(.n-tree .n-tree-node-wrapper) {
   padding: 1px 0;
@@ -149,9 +148,9 @@ const handleLoad = async (node) => {
   margin-right: 5px;
 }
 
-:deep(
+/*:deep(
     .n-tree .n-tree-node:not(.n-tree-node--disabled).n-tree-node--clickable .n-tree-node-content
   ) {
   white-space: nowrap;
-}
+}*/
 </style>
