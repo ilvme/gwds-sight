@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref, useTemplateRef } from 'vue'
+import { nextTick, onMounted, ref, useTemplateRef } from 'vue'
 import { getMenuByNodeType } from '@/utils/menus/tree.js'
 import TableCreatorAndEditor from '@/views/table/create.vue'
 import DatasourceCreator from '@/views/datasource/create.vue'
@@ -67,13 +67,15 @@ const nodeProps = ({ option }) => {
       Toast.info(`[Click] ${option.label}`)
     },
     onContextmenu(e) {
-      currentClickNode.value = option
-      rightOptions.value = getMenuByNodeType(option)
-      showDropdown.value = true
-      xRef.value = e.clientX
-      yRef.value = e.clientY
-
       e.preventDefault()
+      showDropdown.value = false
+      nextTick().then(() => {
+        currentClickNode.value = option
+        rightOptions.value = getMenuByNodeType(option)
+        showDropdown.value = true
+        xRef.value = e.clientX
+        yRef.value = e.clientY
+      })
     },
   }
 }
