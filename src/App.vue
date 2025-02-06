@@ -1,5 +1,6 @@
 <script setup>
 import Layout from '@/layout/index.vue'
+import { dateZhCN, zhCN } from 'naive-ui'
 
 // TODO 优化
 const themeOverrides = {
@@ -13,7 +14,7 @@ const themeOverrides = {
 </script>
 
 <template>
-  <n-config-provider :theme-overrides="themeOverrides">
+  <n-config-provider :theme-overrides="themeOverrides" :locale="zhCN" :date-locale="dateZhCN">
     <n-notification-provider>
       <n-message-provider>
         <Layout />
