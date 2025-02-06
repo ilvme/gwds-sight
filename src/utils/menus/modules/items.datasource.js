@@ -12,6 +12,14 @@ export default {
     key: 'DATASOURCE_EDIT',
     icon: renderIcon(EditNoteRound, { size: 18 }),
   },
+  DATASOURCE_RENAME: {
+    label: '重命名',
+    key: 'DATASOURCE_RENAME',
+  },
+  DATASOURCE_REMOVE: {
+    label: '移除数据源',
+    key: 'DATASOURCE_REMOVE',
+  },
   DATASOURCE_REFRESH: {
     label: '刷新',
     key: 'DATASOURCE_REFRESH',

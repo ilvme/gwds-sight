@@ -1,5 +1,5 @@
 <script setup>
-import SQLEditor from '@/views/sql-console/components/SQLEditor.vue'
+import SQLEditor from '@/views/sql-console/SQLEditor.vue'
 import { ref, useId } from 'vue'
 import DataOperation from '@/views/data/index.vue'
 import { useTabStore } from '@/stores/tab.js'

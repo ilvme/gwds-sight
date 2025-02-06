@@ -8,8 +8,11 @@ export const getMenuByNodeType = (node) => {
         DIVIDER(),
         ITEMS.DATASOURCE_CREATE, // 新建数据源
         ITEMS.DATASOURCE_EDIT, // 编辑连接
+        ITEMS.DATASOURCE_RENAME, // 重命名
         DIVIDER(), // 分割线
         ITEMS.DATABASE_CREATE, // 新建数据库
+        DIVIDER(), // 分割线
+        ITEMS.DATASOURCE_REMOVE, // 移除数据源
         DIVIDER(), // 分割线
         ITEMS.DATASOURCE_REFRESH, // 刷新
       ]

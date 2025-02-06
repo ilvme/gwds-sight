@@ -1,5 +1,5 @@
 <script setup>
-import { nextTick, onMounted, ref, useTemplateRef } from 'vue'
+import { nextTick, onMounted, ref, useTemplateRef, watch } from 'vue'
 import { getMenuByNodeType } from '@/utils/menus/tree.js'
 import TableCreatorAndEditor from '@/views/table/create.vue'
 import DatasourceCreator from '@/views/datasource/create.vue'
@@ -9,17 +9,39 @@ import { getTreeIconByNodeType, renderIcon } from '@/utils/icon.js'
 import { ViewListRound } from '@vicons/material'
 import { useTabStore } from '@/stores/tab.js'
 import { nanoid } from 'nanoid'
+import DatasourceRemover from '@/views/datasource/remove.vue'
+import { treeStore } from '@/layout/Aside/useTree.js'
 
 // const data = ref(treeData)
+// 当移除或增加节点时恢复原展开节点状态
+const defaultExpandKeys = ref([])
+const handleUpdateExpandKeys = (keys) => {
+  defaultExpandKeys.value = keys
+}
 const data = ref([])
+const loading = ref(false)
+
+watch(
+  () => treeStore.flag,
+  async () => {
+    await initTree()
+  },
+)
 
 onMounted(async () => {
+  console.log('initTree...')
+  await initTree()
+})
+
+async function initTree() {
+  loading.value = true
   const res = await fetchTree()
   res.data.forEach((item) => {
     item.prefix = renderIcon(ViewListRound, { size: 18 })
   })
+  loading.value = false
   data.value = res.data
-})
+}
 
 // 当前点击的树节点
 const currentClickNode = ref(null)
@@ -30,6 +52,7 @@ const { addTab } = useTabStore()
 
 const tableCreatorAndEditorRef = useTemplateRef('tableCreatorAndEditorRef')
 const datasourceCreatorRef = useTemplateRef('datasourceCreatorRef')
+const datasourceRemoverRef = useTemplateRef('datasourceRemoverRef')
 const handleSelect = (key) => {
   console.log(currentClickNode.value)
   switch (key) {
@@ -38,6 +61,12 @@ const handleSelect = (key) => {
       break
     case 'DATASOURCE_CREATE':
       datasourceCreatorRef.value.openModal()
+      break
+    case 'DATASOURCE_REMOVE':
+      datasourceRemoverRef.value.openModal({
+        id: currentClickNode.value.key.split('-')[1],
+        name: currentClickNode.value.label,
+      })
       break
     case 'SQL_CONSOLE':
       addTab({
@@ -99,36 +128,45 @@ const handleLoad = async (node) => {
 
 <template>
   <aside style="height: calc(100vh - 50px)">
-    <n-tree
-      class="tree"
-      @load="handleLoad"
-      check-strategy="child"
-      show-line
-      :data="data"
-      :node-props="nodeProps"
-    >
-      <template #empty>
-        <n-empty description="请先新建一个数据源吧" />
-      </template>
-    </n-tree>
-    <!-- 树右键菜单 -->
-    <n-dropdown
-      size="small"
-      trigger="manual"
-      placement="bottom-start"
-      :show="showDropdown"
-      :options="rightOptions"
-      :x="xRef"
-      :y="yRef"
-      @select="handleSelect"
-      @clickoutside="clickOutside"
-    />
+    <n-spin size="small" :show="loading" :delay="500">
+      <template #description> 拼命加载中... </template>
+      <n-tree
+        v-if="loading === false"
+        class="tree"
+        @load="handleLoad"
+        check-strategy="child"
+        show-line
+        :data="data"
+        :node-props="nodeProps"
+        :default-expanded-keys="defaultExpandKeys"
+        @update-expanded-keys="handleUpdateExpandKeys"
+      >
+        <template #empty>
+          <n-empty description="请先新建一个数据源吧" />
+        </template>
+      </n-tree>
+      <!-- 树右键菜单 -->
+      <n-dropdown
+        size="small"
+        trigger="manual"
+        placement="bottom-start"
+        :show="showDropdown"
+        :options="rightOptions"
+        :x="xRef"
+        :y="yRef"
+        @select="handleSelect"
+        @clickoutside="clickOutside"
+      />
 
-    <!-- 创建表 -->
-    <TableCreatorAndEditor ref="tableCreatorAndEditorRef" />
+      <!-- 创建表 -->
+      <TableCreatorAndEditor ref="tableCreatorAndEditorRef" />
 
-    <!-- 创建数据源 -->
-    <DatasourceCreator ref="datasourceCreatorRef" />
+      <!-- 创建数据源 -->
+      <DatasourceCreator ref="datasourceCreatorRef" />
+
+      <!-- 移除数据源 -->
+      <DatasourceRemover ref="datasourceRemoverRef" />
+    </n-spin>
   </aside>
 </template>
 
