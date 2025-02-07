@@ -2,16 +2,14 @@
 import { useBoolean } from '@/hooks/useBoolean.js'
 import { ref, useTemplateRef } from 'vue'
 import { Toast } from '@/utils/Layer.js'
-import { createDatasource } from '@/api/datasource.js'
+import { createDatasource, fetchDatasource } from '@/api/datasource.js'
 import { treeStore } from '@/layout/Aside/useTree.js'
 
 defineOptions({ name: 'DatasourceCreator' })
 
 const { bool: modalVisible, setTrue: showModal, setFalse: hiddenModal } = useBoolean(false)
 
-const openModal = () => {
-  showModal()
-}
+const id = ref(null)
 
 // 密码保存方式
 const pwdSaveType = ref('4')
@@ -20,7 +18,7 @@ const datasource = ref({
   name: 'ss', // 名称
   description: 'asdasda', // 注释
   host: '1.1.1.1', // 主机
-  port: '2222', // 端口
+  port: 3306, // 端口
   username: 'asadasd', // 用户名
   password: 'asdasda', // 密码
   database: 'ssssss', //  默认数据库
@@ -55,7 +53,33 @@ const rules = {
   username: { required: true, message: '请输入用户名', trigger: 'blur' },
   password: { required: true, message: '请输入密码', trigger: 'blur' },
   host: { required: true, message: '请输入主机', trigger: ['blur'] },
-  port: { required: true, message: '请输入端口', trigger: ['input', 'blur'] },
+  port: {
+    required: true,
+    message: '请输入端口',
+    validator: (rule, value) => {
+      if (!value) {
+        return new Error('请输入端口')
+      } else if (!/^\d*$/.test(value)) {
+        return new Error('端口应该为整数')
+      } else {
+        if (value > 65535 || value < 1) {
+          return new Error('端口范围在1-65535之间')
+        }
+        return true
+      }
+    },
+    trigger: ['blur'],
+  },
+}
+
+const openModal = async (datasourceId) => {
+  if (datasourceId) {
+    id.value = datasourceId
+    const { data } = await fetchDatasource(datasourceId)
+    datasource.value = data
+    console.log(datasource.value)
+  }
+  showModal()
 }
 
 defineExpose({ openModal })
@@ -90,7 +114,14 @@ defineExpose({ openModal })
               <n-input v-model:value="datasource.host" style="width: 300px" />
             </n-form-item>
             <n-form-item label="端口" path="port">
-              <n-input v-model:value="datasource.port" style="width: 120px" value="5258" />
+              <n-input-number
+                :show-button="false"
+                v-model:value="datasource.port"
+                :max="65535"
+                :min="1"
+                style="width: 120px"
+                :value="5258"
+              />
             </n-form-item>
           </n-flex>
 

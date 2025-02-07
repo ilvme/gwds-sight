@@ -62,6 +62,9 @@ const handleSelect = (key) => {
     case 'DATASOURCE_CREATE':
       datasourceCreatorRef.value.openModal()
       break
+    case 'DATASOURCE_EDIT':
+      datasourceCreatorRef.value.openModal(currentClickNode.value.key.split('-')[1])
+      break
     case 'DATASOURCE_REMOVE':
       datasourceRemoverRef.value.openModal({
         id: currentClickNode.value.key.split('-')[1],
