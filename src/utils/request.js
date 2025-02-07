@@ -22,6 +22,7 @@ fetcher.interceptors.response.use(
       return response.data
     } else {
       Layer.error(response.data.msg)
+      return Promise.reject(response.data.msg)
     }
   },
   (error) => Promise.reject(error),
