@@ -1,19 +1,48 @@
 <script setup>
 import {
   ArrowCircleUpFilled,
-  KeyboardDoubleArrowLeftFilled,
-  KeyboardDoubleArrowRightOutlined,
+  KeyboardArrowDownRound,
   KeyboardArrowLeftFilled,
   KeyboardArrowRightRound,
-  KeyboardArrowDownRound,
-  RefreshOutlined,
-  PlusOutlined,
+  KeyboardDoubleArrowLeftFilled,
+  KeyboardDoubleArrowRightOutlined,
   MinusOutlined,
+  PlusOutlined,
+  RefreshOutlined,
 } from '@vicons/material'
 import { NIcon } from 'naive-ui'
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
+import { fetchData } from '@/api/data.js'
 
 defineOptions({ name: 'DataOperation' })
+const props = defineProps({
+  // 来源，tab 页面或者 SQL 编辑器结果区域
+  origin: { type: String, required: true },
+
+  // 初始化所需数据，如果是来自 Tab 页面需要解析数据源、数据库、表名等
+  meta: { type: Object, default: () => ({}) },
+})
+
+onMounted(async () => {
+  console.log('props', props)
+  if (props.origin === 'tab') {
+    const key = props.meta.sourceNode.key
+    const arr = key.split('-')
+    const res = await fetchData({
+      datasourceId: arr[arr.length - 1],
+      databaseName: arr[arr.length - 2],
+      tableName: arr[arr.length - 3],
+      pageSize: pageSize.value,
+      pageNum: 1,
+    })
+    let cs = []
+    res.data.data.columnNameList.forEach((item) => {
+      cs.push({ title: item, key: item })
+    })
+    columns.value = cs
+    data.value = res.data.data.dataMapList
+  }
+})
 
 const options = [
   { label: 10, key: 10 },
@@ -36,11 +65,7 @@ const tipOption = computed(() => {
 })
 
 const data = ref([])
-const columns = ref([
-  { title: 'Name', key: 'name' },
-  { title: 'Age', key: 'age' },
-  { title: 'Address', key: 'address' },
-])
+const columns = ref([])
 </script>
 
 <template>

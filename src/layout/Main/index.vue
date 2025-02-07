@@ -2,8 +2,7 @@
 import { useTabStore } from '@/stores/tab.js'
 import { storeToRefs } from 'pinia'
 import Welcome from '@/views/Welcome.vue'
-import { MoreVertRound, CloseRound } from '@vicons/material'
-import { AutoAwesomeRound } from '@vicons/material'
+import { AutoAwesomeRound, CloseRound, MoreVertRound } from '@vicons/material'
 import { computed } from 'vue'
 import { renderIcon } from '@/utils/icon.js'
 import { NIcon } from 'naive-ui'
@@ -63,19 +62,19 @@ function handleSelect(key) {
         :name="tab.name"
         closable
       >
-        <template #tab>
-          <n-tooltip trigger="hover" :delay="500">
-            <template #trigger>
-              <span>{{ tab.label }}</span>
-            </template>
-            <p>数据源：{{ tab.label }}</p>
-            <p>类型：MySQL</p>
-            <p>URL：jdbc:mysql//1.2.3.09:3306</p>
-          </n-tooltip>
-        </template>
+        <!--        <template #tab>-->
+        <!--          <n-tooltip trigger="hover" :delay="500">-->
+        <!--            <template #trigger>-->
+        <!--              <span>{{ tab.label }}</span>-->
+        <!--            </template>-->
+        <!--            <p>数据源：{{ tab.label }}</p>-->
+        <!--            <p>类型：MySQL</p>-->
+        <!--            <p>URL：jdbc:mysql//1.2.3.09:3306</p>-->
+        <!--          </n-tooltip>-->
+        <!--        </template>-->
 
         <!-- tab 页面内容组件 -->
-        <component :is="tab.component" :key="tab.name" />
+        <component :is="tab.component" :key="tab.name" :meta="tab.props" origin="tab" />
       </n-tab-pane>
 
       <!-- 标签栏后缀，一些统一操作按钮 -->

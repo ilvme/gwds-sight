@@ -81,6 +81,16 @@ const handleSelect = (key) => {
         },
       })
       break
+    case 'TABLE_OPEN':
+      addTab({
+        label: `表数据`,
+        name: nanoid(),
+        props: {
+          type: 'DATA_OPERATION',
+          sourceNode: currentClickNode.value,
+        },
+      })
+      break
     default:
       Toast.success(key)
   }
