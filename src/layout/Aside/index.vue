@@ -83,7 +83,7 @@ const handleSelect = (key) => {
       break
     case 'TABLE_OPEN':
       addTab({
-        label: `表数据`,
+        label: `表数据[${currentClickNode.value.label}]`,
         name: nanoid(),
         props: {
           type: 'DATA_OPERATION',

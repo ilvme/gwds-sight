@@ -22,9 +22,11 @@ const props = defineProps({
   // 初始化所需数据，如果是来自 Tab 页面需要解析数据源、数据库、表名等
   meta: { type: Object, default: () => ({}) },
 })
+const loading = ref(false)
 
 onMounted(async () => {
   console.log('props', props)
+  loading.value = true
   if (props.origin === 'tab') {
     const key = props.meta.sourceNode.key
     const arr = key.split('-')
@@ -37,11 +39,15 @@ onMounted(async () => {
     })
     let cs = []
     res.data.data.columnNameList.forEach((item) => {
-      cs.push({ title: item, key: item })
+      cs.push({ title: item, key: item, width: 'auto', minWidth: 100, resizable: true })
     })
     columns.value = cs
+    columns.value.unshift({
+      type: 'selection',
+    })
     data.value = res.data.data.dataMapList
   }
+  loading.value = false
 })
 
 const options = [
@@ -52,7 +58,7 @@ const options = [
   { label: 250, key: 250 },
   { label: 500, key: 500 },
 ]
-const pageSize = ref(10)
+const pageSize = ref(20)
 function handleChangePageSize(key) {
   pageSize.value = key
 }
@@ -178,7 +184,10 @@ const columns = ref([])
       size="small"
       :columns="columns"
       :data="data"
-      :bordered="false"
+      bordered
+      :single-line="false"
+      max-height="calc(100vh - 280px)"
+      :scroll-x="300"
     />
     <n-empty v-else description="没有任何数据" />
   </div>
