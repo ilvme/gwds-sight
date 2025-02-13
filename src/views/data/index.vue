@@ -139,7 +139,7 @@ const tipOption = computed(() => {
 
 <template>
   <div>
-    <!-- 操作栏 -->
+    <!-- 操作栏区域 -->
     <n-flex size="small" align="center">
       <n-flex :size="5" align="center">
         <n-popover trigger="hover" :delay="500" placement="bottom">
@@ -165,7 +165,7 @@ const tipOption = computed(() => {
           @select="handleChangePageSize"
         >
           <n-flex size="small" align="center" style="cursor: pointer !important">
-            <span>每页 {{ pageSize }} 个 / 共 {{ totalRows }} 行</span>
+            <span>第 {{ pageNum }} 页 / 每页 {{ pageSize }} / 共 {{ totalRows }} 行</span>
 
             <n-icon><KeyboardArrowDownRound /></n-icon>
           </n-flex>
