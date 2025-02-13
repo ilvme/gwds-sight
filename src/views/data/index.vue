@@ -26,8 +26,9 @@ const props = defineProps({
 const sourceNode = ref(props.meta.sourceNode)
 
 // 表格数据与列信息
-const data = ref([])
+const dataMap = ref([])
 const columns = ref([])
+const totalRows = ref(0)
 
 const loading = ref(false)
 
@@ -44,6 +45,7 @@ const initializedCol = {
 }
 // 初始化表格数据
 async function initTable() {
+  dataMap.value = []
   loading.value = true
   const arr = sourceNode.value.key.split('-')
   const [, tableName, databaseName, datasourceId] = arr
@@ -54,9 +56,18 @@ async function initTable() {
     where: where.value,
     orderBy: orderBy.value,
     pageSize: pageSize.value,
-    pageNum: 1,
+    pageNum: pageNum.value,
   })
-  const { columnNameList, dataMapList } = res.data.data
+  const { columnNameList, dataMapList, total } = res.data.data
+  totalRows.value = total
+
+  // 行数据手动添加 _$_key
+  dataMapList.forEach((item, index) => {
+    item._$_key = nanoid() + index
+  })
+  dataMap.value = dataMapList
+
+  // 列信息处理
   let cs = []
   columnNameList.forEach((item) => {
     cs.push({
@@ -64,32 +75,39 @@ async function initTable() {
       title: item,
       key: item,
       render(row) {
-        const index = getDataIndex(row._key)
+        const index = getDataIndex(row._$_key)
         return h(InputEditor, {
           value: row[item],
           onUpdateValue(v) {
-            data.value[index][item] = v
+            dataMap.value[index][item] = v
           },
         })
       },
     })
   })
   columns.value = cs
-  dataMapList.forEach((item, index) => {
-    item._key = nanoid() + index
-  })
-  data.value = dataMapList
 
   loading.value = false
 }
 
 // 获取数据索引
 const getDataIndex = (key) => {
-  return data.value.findIndex((item) => item._key === key)
+  return dataMap.value.findIndex((item) => item._$_key === key)
 }
 
-// 分页
+// 重新加载数据
+function reloadData() {
+  initTable()
+}
+// 提交更改
+async function onSubmit() {
+  console.log(dataMap.value)
+}
+
+// 页数据量大小
 const options = [
+  { label: '页面大小', key: 'never', disabled: true },
+  { label: 5, key: 5 },
   { label: 10, key: 10 },
   { label: 20, key: 20 },
   { label: 50, key: 50 },
@@ -97,12 +115,14 @@ const options = [
   { label: 250, key: 250 },
   { label: 500, key: 500 },
 ]
+const pageNum = ref(1)
 const pageSize = ref(20)
 function handleChangePageSize(key) {
   pageSize.value = key
 }
 
 // 搜索条件
+// const where = ref("id = 'aaa'")
 const where = ref('')
 
 // 排序条件
@@ -135,20 +155,21 @@ const tipOption = computed(() => {
           </template>
           上一页
         </n-popover>
-        <div>
-          <n-dropdown
-            placement="bottom"
-            trigger="click"
-            size="small"
-            :options="options"
-            @select="handleChangePageSize"
-          >
-            <n-flex size="small" align="center" style="cursor: pointer !important">
-              <span>{{ pageSize + '行' }}</span>
-              <n-icon><KeyboardArrowDownRound /></n-icon>
-            </n-flex>
-          </n-dropdown>
-        </div>
+
+        <n-dropdown
+          placement="bottom"
+          trigger="click"
+          size="small"
+          :options="options"
+          @select="handleChangePageSize"
+        >
+          <n-flex size="small" align="center" style="cursor: pointer !important">
+            <span>每页 {{ pageSize }} 个 / 共 {{ totalRows }} 行</span>
+
+            <n-icon><KeyboardArrowDownRound /></n-icon>
+          </n-flex>
+        </n-dropdown>
+
         <n-popover trigger="hover" :delay="500" placement="bottom">
           <template #trigger>
             <n-icon size="22" class="btn"><KeyboardArrowRightRound /></n-icon>
@@ -164,11 +185,13 @@ const tipOption = computed(() => {
       </n-flex>
       <n-popover trigger="hover" :delay="500" placement="bottom">
         <template #trigger>
-          <n-icon size="22" class="btn"><RefreshOutlined /></n-icon>
+          <n-icon size="22" class="btn" @click="reloadData"><RefreshOutlined /></n-icon>
         </template>
         重新加载数据
       </n-popover>
+
       <n-divider vertical />
+
       <n-popover trigger="hover" :delay="500" placement="bottom">
         <template #trigger>
           <n-icon size="22" class="btn"><PlusOutlined /></n-icon>
@@ -183,9 +206,11 @@ const tipOption = computed(() => {
       </n-popover>
       <n-popover trigger="hover" :delay="500" placement="bottom">
         <template #trigger>
-          <n-icon size="22" class="btn"><ArrowCircleUpFilled /></n-icon>
+          <n-icon size="22" class="btn" color="green" @click="onSubmit">
+            <ArrowCircleUpFilled />
+          </n-icon>
         </template>
-        提交
+        提交更改
       </n-popover>
     </n-flex>
 
@@ -217,16 +242,16 @@ const tipOption = computed(() => {
 
     <!-- 数据区域 -->
     <n-data-table
-      v-if="data.length > 0"
+      v-if="columns.length > 0"
       :loading="loading"
       size="small"
       :columns="columns"
-      :data="data"
+      :data="dataMap"
       bordered
       :single-line="false"
       max-height="calc(100vh - 280px)"
       :scroll-x="300"
-      :row-key="(row) => row._key"
+      :row-key="(row) => row._$_key"
     />
     <n-empty v-else description="没有任何数据" />
   </div>
