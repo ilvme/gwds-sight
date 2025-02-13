@@ -14,7 +14,7 @@ import { treeStore } from '@/layout/Aside/useTree.js'
 
 // const data = ref(treeData)
 // 当移除或增加节点时恢复原展开节点状态
-const defaultExpandKeys = ref([])
+const defaultExpandKeys = ref(['ds-1', 'db-dev_env-1', 'tf-dev_env-1'])
 const handleUpdateExpandKeys = (keys) => {
   defaultExpandKeys.value = keys
 }
@@ -54,7 +54,7 @@ const tableCreatorAndEditorRef = useTemplateRef('tableCreatorAndEditorRef')
 const datasourceCreatorRef = useTemplateRef('datasourceCreatorRef')
 const datasourceRemoverRef = useTemplateRef('datasourceRemoverRef')
 const handleSelect = (key) => {
-  console.log(currentClickNode.value)
+  console.log('click node：', currentClickNode.value)
   switch (key) {
     case 'TABLE_CREATE':
       tableCreatorAndEditorRef.value.openModal()

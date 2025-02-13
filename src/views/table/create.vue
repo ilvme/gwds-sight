@@ -1,7 +1,7 @@
 <script setup>
 import { useBoolean } from '@/hooks/useBoolean.js'
 import { h, nextTick, ref } from 'vue'
-import InputEditor from '@/views/table/components/InputEditor.vue'
+import InputEditor from '@/components/InputEditor/index.vue'
 import { PlusRound } from '@vicons/material'
 import { nanoid } from 'nanoid'
 import { NButton, NIcon, NSelect } from 'naive-ui'

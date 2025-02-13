@@ -74,7 +74,7 @@ function handleSelect(key) {
         <!--        </template>-->
 
         <!-- tab 页面内容组件 -->
-        <component :is="tab.component" :key="tab.name" :meta="tab.props" origin="tab" />
+        <component :is="tab.component" :key="tab.name" :meta="tab.props" />
       </n-tab-pane>
 
       <!-- 标签栏后缀，一些统一操作按钮 -->

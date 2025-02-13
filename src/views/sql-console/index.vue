@@ -1,7 +1,6 @@
 <script setup>
 import SQLEditor from '@/views/sql-console/SQLEditor.vue'
 import { ref, useId } from 'vue'
-import DataOperation from '@/views/data/index.vue'
 import { useTabStore } from '@/stores/tab.js'
 import { storeToRefs } from 'pinia'
 
@@ -28,7 +27,8 @@ initSourceNode.value = sourceNode
       <n-tabs default-value="1" style="padding-left: 10px">
         <n-tab-pane name="1" tab="执行信息"><p>> 执行 1 条 SQL, 耗时 34 毫秒。</p> </n-tab-pane>
         <n-tab-pane name="2" tab="t_user">
-          <DataOperation origin="sql-console" />
+          <!--          <DataOperation origin="sql-console" />-->
+          <n-empty description="没有任何数据" />
         </n-tab-pane>
       </n-tabs>
     </template>
