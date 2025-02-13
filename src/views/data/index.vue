@@ -42,6 +42,7 @@ const initializedCol = {
   width: 'auto',
   minWidth: 100,
   resizable: true,
+  sorter: 'default',
 }
 // 初始化表格数据
 async function initTable() {
