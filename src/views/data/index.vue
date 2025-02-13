@@ -65,6 +65,7 @@ async function initTable() {
   // 行数据手动添加 _$_key
   dataMapList.forEach((item, index) => {
     item._$_key = nanoid() + index
+    item._$_edit = false
   })
   dataMap.value = dataMapList
 
@@ -81,6 +82,8 @@ async function initTable() {
           value: row[item],
           onUpdateValue(v) {
             dataMap.value[index][item] = v
+            dataMap.value[index]._$_edit = true
+            console.log(dataMap.value[index])
           },
         })
       },
@@ -103,6 +106,10 @@ function reloadData() {
 // 提交更改
 async function onSubmit() {
   console.log(dataMap.value)
+}
+
+function getRowClassName(row) {
+  return row._$_edit ? 'highlight' : ''
 }
 
 // 页数据量大小
@@ -249,10 +256,10 @@ const tipOption = computed(() => {
       :columns="columns"
       :data="dataMap"
       bordered
-      :single-line="false"
+      bottom-bordered
       max-height="calc(100vh - 280px)"
-      :scroll-x="300"
       :row-key="(row) => row._$_key"
+      :row-class-name="getRowClassName"
     />
     <n-empty v-else description="没有任何数据" />
   </div>
@@ -269,5 +276,9 @@ const tipOption = computed(() => {
 }
 .btn:hover {
   background-color: #f3f2f2;
+}
+
+:deep(.highlight) {
+  background-color: #f3f3f3 !important;
 }
 </style>
