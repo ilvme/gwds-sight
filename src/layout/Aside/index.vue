@@ -21,10 +21,22 @@ const handleUpdateExpandKeys = (keys) => {
 const data = ref([])
 const loading = ref(false)
 
+// 监听 treeStore.flag 变化，当有值时添加或删除节点
 watch(
   () => treeStore.flag,
   async () => {
-    await initTree()
+    // await initTree()
+    // 添加节点
+    const { node, opType } = treeStore
+    if (opType === 'add') {
+      node.prefix = renderIcon(getTreeIconByNodeType(node))
+      addNodeToTree(data.value, node?.parent?.key, node)
+    }
+
+    // 删除节点
+    if (opType === 'remove') {
+      removeNodeFromTree(data.value, node.key)
+    }
   },
 )
 
@@ -41,6 +53,44 @@ async function initTree() {
   })
   loading.value = false
   data.value = res.data
+}
+
+// 添加树节点
+function addNodeToTree(treeData, parentKey, newNode) {
+  if (!parentKey) {
+    return treeData.push(newNode)
+  }
+  const findParent = (nodes) => {
+    for (const node of nodes) {
+      if (node.key === parentKey) {
+        if (!node.children) node.children = []
+        node.children.push(newNode)
+        return true
+      }
+      if (node.children && findParent(node.children)) {
+        return true
+      }
+    }
+    return false
+  }
+  findParent(treeData)
+}
+
+// 删除树节点
+function removeNodeFromTree(treeData, targetKey) {
+  const remove = (nodes) => {
+    for (let i = 0; i < nodes.length; i++) {
+      if (nodes[i].key === targetKey) {
+        nodes.splice(i, 1)
+        return true
+      }
+      if (nodes[i].children && remove(nodes[i].children)) {
+        return true
+      }
+    }
+    return false
+  }
+  remove(treeData)
 }
 
 // 当前点击的树节点
@@ -66,10 +116,11 @@ const handleSelect = (key) => {
       datasourceCreatorRef.value.openModal(currentClickNode.value.key.split('-')[1])
       break
     case 'DATASOURCE_REMOVE':
-      datasourceRemoverRef.value.openModal({
-        id: currentClickNode.value.key.split('-')[1],
-        name: currentClickNode.value.label,
-      })
+      // datasourceRemoverRef.value.openModal({
+      //   id: currentClickNode.value.key.split('-')[1],
+      //   name: currentClickNode.value.label,
+      // })
+      datasourceRemoverRef.value.openModal(currentClickNode.value)
       break
     case 'SQL_CONSOLE':
       addTab({

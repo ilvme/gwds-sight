@@ -9,6 +9,7 @@ defineOptions({ name: 'DatasourceRemover' })
 
 const { bool: modalVisible, setTrue: showModal, setFalse: hiddenModal } = useBoolean(false)
 
+const node = ref(null)
 const id = ref('')
 const name = ref('')
 
@@ -16,17 +17,17 @@ const content = computed(() => {
   return `数据源 ${name.value} 将被删除。`
 })
 
-const openModal = (datasource) => {
-  console.log(datasource)
-  id.value = datasource.id
-  name.value = datasource.name
+const openModal = (datasourceNode) => {
+  node.value = datasourceNode
+  id.value = datasourceNode.key.split('-')[1]
+  name.value = datasourceNode.label
   showModal()
 }
 
 const onConfirm = async () => {
   hiddenModal()
   await deleteDatasource(id.value)
-  treeStore.refresh()
+  treeStore.refresh(node, 'remove')
   Toast.success('删除数据源成功')
 }
 

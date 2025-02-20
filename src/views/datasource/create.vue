@@ -35,9 +35,9 @@ const onSave = (e) => {
   e.preventDefault()
   formRef.value?.validate(async (errors) => {
     if (!errors) {
-      await createDatasource(datasource.value)
+      const res = await createDatasource(datasource.value)
+      treeStore.refresh(res.data, 'add')
       Toast.success('创建数据源成功')
-      treeStore.refresh()
       hiddenModal()
     }
   })
