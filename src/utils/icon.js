@@ -17,9 +17,8 @@ export function renderIcon(icon, props = null) {
   }
 }
 
-export function getTreeIconByNodeType(treeNode) {
-  const type = treeNode.nodeType
-  switch (type) {
+export function getTreeIconByNodeType(nodeType) {
+  switch (nodeType) {
     case 'ds':
       return ViewListRound
     case 'db':
