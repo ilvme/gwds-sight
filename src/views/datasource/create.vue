@@ -3,7 +3,7 @@ import { useBoolean } from '@/hooks/useBoolean.js'
 import { ref, useTemplateRef } from 'vue'
 import { Toast } from '@/utils/Layer.js'
 import { createDatasource, fetchDatasource } from '@/api/datasource.js'
-import { treeStore } from '@/layout/Aside/useTree.js'
+import { OP_TYPE_LIST, treeStore } from '@/layout/Aside/useTree.js'
 
 defineOptions({ name: 'DatasourceCreator' })
 
@@ -36,7 +36,7 @@ const onSave = (e) => {
   formRef.value?.validate(async (errors) => {
     if (!errors) {
       const res = await createDatasource(datasource.value)
-      treeStore.refresh(res.data, 'add')
+      treeStore.refresh(OP_TYPE_LIST.ADD, res.data, null)
       Toast.success('创建数据源成功')
       hiddenModal()
     }

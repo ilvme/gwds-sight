@@ -10,7 +10,9 @@ import { ViewListRound } from '@vicons/material'
 import { useTabStore } from '@/stores/tab.js'
 import { nanoid } from 'nanoid'
 import DatasourceRemover from '@/views/datasource/remove.vue'
-import { treeStore } from '@/layout/Aside/useTree.js'
+import { OP_TYPE_LIST, treeStore } from '@/layout/Aside/useTree.js'
+import DatabaseCreator from '@/views/database/create.vue'
+import DatabaseRemover from '@/views/database/remove.vue'
 
 // const data = ref(treeData)
 // 当移除或增加节点时恢复原展开节点状态
@@ -27,15 +29,15 @@ watch(
   async () => {
     // await initTree()
     // 添加节点
-    const { node, opType } = treeStore
-    if (opType === 'add') {
-      node.prefix = renderIcon(getTreeIconByNodeType(node))
-      addNodeToTree(data.value, node?.parent?.key, node)
-    }
-
-    // 删除节点
-    if (opType === 'remove') {
-      removeNodeFromTree(data.value, node.key)
+    const { targetNode, opType, parentKey } = treeStore
+    switch (opType) {
+      case OP_TYPE_LIST.ADD: // 添加节点
+        targetNode.prefix = renderIcon(getTreeIconByNodeType(targetNode.nodeType))
+        addNodeToTree(data.value, parentKey, targetNode)
+        break
+      case OP_TYPE_LIST.REMOVE: // 删除节点
+        removeNodeFromTree(data.value, targetNode.key)
+        break
     }
   },
 )
@@ -101,14 +103,27 @@ const showDropdown = ref(false)
 const { addTab } = useTabStore()
 
 const tableCreatorAndEditorRef = useTemplateRef('tableCreatorAndEditorRef')
+const databaseCreatorRef = useTemplateRef('databaseCreatorRef')
+const databaseRemoverRef = useTemplateRef('databaseRemoverRef')
 const datasourceCreatorRef = useTemplateRef('datasourceCreatorRef')
 const datasourceRemoverRef = useTemplateRef('datasourceRemoverRef')
 const handleSelect = (key) => {
   console.log('click node：', currentClickNode.value)
   switch (key) {
+    // 数据库创建
+    case 'DATABASE_CREATE':
+      databaseCreatorRef.value.openModal(currentClickNode.value)
+      break
+    case 'DATABASE_DELETE':
+      databaseRemoverRef.value.openModal(currentClickNode.value)
+      break
+
+    // 表创建
     case 'TABLE_CREATE':
       tableCreatorAndEditorRef.value.openModal()
       break
+
+    // 数据源创建
     case 'DATASOURCE_CREATE':
       datasourceCreatorRef.value.openModal()
       break
@@ -184,7 +199,7 @@ const handleLoad = async (node) => {
   const arr = node.key.split('-')
   const { data } = await fetchTree(arr[arr.length - 1], node)
   data.forEach((item) => {
-    item.prefix = renderIcon(getTreeIconByNodeType(item))
+    item.prefix = renderIcon(getTreeIconByNodeType(item.nodeType))
   })
   node.children = data
 }
@@ -230,6 +245,12 @@ const handleLoad = async (node) => {
 
       <!-- 移除数据源 -->
       <DatasourceRemover ref="datasourceRemoverRef" />
+
+      <!-- 创建数据库 -->
+      <DatabaseCreator ref="databaseCreatorRef" />
+
+      <!-- 删除数据库 -->
+      <DatabaseRemover ref="databaseRemoverRef" />
     </n-spin>
   </aside>
 </template>

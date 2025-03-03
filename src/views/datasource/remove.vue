@@ -3,7 +3,7 @@ import { useBoolean } from '@/hooks/useBoolean.js'
 import { computed, ref } from 'vue'
 import { deleteDatasource } from '@/api/datasource.js'
 import { Toast } from '@/utils/Layer.js'
-import { treeStore } from '@/layout/Aside/useTree.js'
+import { OP_TYPE_LIST, treeStore } from '@/layout/Aside/useTree.js'
 
 defineOptions({ name: 'DatasourceRemover' })
 
@@ -27,7 +27,7 @@ const openModal = (datasourceNode) => {
 const onConfirm = async () => {
   hiddenModal()
   await deleteDatasource(id.value)
-  treeStore.refresh(node, 'remove')
+  treeStore.refresh(OP_TYPE_LIST.REMOVE, node)
   Toast.success('删除数据源成功')
 }
 
