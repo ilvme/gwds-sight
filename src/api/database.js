@@ -10,3 +10,9 @@ export const createDatabase = (database) => fetcher.post('/database', database)
  */
 export const deleteDatabase = (datasourceId, databaseName) =>
   fetcher.delete(`/database`, { params: { databaseName, datasourceId } })
+
+/**
+ * 查询数据库列表
+ */
+export const fetchDatabaseList = (datasourceId) =>
+  fetcher.get(`/database?datasourceId=${datasourceId}`)
