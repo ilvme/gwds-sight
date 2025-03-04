@@ -5,6 +5,7 @@ const TreeUtil = {
    * @returns {*}
    */
   parseDatasourceId: (key) => {
+    if (!key) return
     const arr = key.split('-')
     return arr[arr.length - 1]
   },
@@ -14,6 +15,7 @@ const TreeUtil = {
    * @returns {*}
    */
   buildDatasourceKey: (key) => {
+    if (!key) return
     const arr = key.split('-')
     return 'ds-' + arr[arr.length - 1]
   },
