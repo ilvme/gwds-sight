@@ -10,6 +10,7 @@ const { tabList, activeTab } = storeToRefs(tabStore)
 const initSourceNode = ref()
 const { sourceNode } = tabList.value.find((item) => item.name === activeTab.value).props
 initSourceNode.value = sourceNode
+console.log(initSourceNode.value)
 </script>
 
 <template>

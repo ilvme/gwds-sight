@@ -20,6 +20,9 @@ import {
 import { useResizeObserver } from '@vueuse/core'
 import { NIcon } from 'naive-ui'
 import { renderIcon } from '@/utils/icon.js'
+import { fetchDatasourceList } from '@/api/datasource.js'
+import TreeUtil from '@/utils/menus/support.js'
+import { fetchDatabaseList } from '@/api/database.js'
 
 defineOptions({ name: 'SQLEditor' })
 
@@ -47,7 +50,25 @@ const editorRef = ref(null)
 const editor = ref(null)
 
 onMounted(async () => {
-  currentDatasource.value = props.sourceNode?.key
+  // TODO 数据源、数据库初始化需要分情况
+  // 1.无数据源、无数据库时
+  // 2.有数据源、无数据库
+  // 3.有数据源、有数据库
+  // 获取所有数据源
+  const res = await fetchDatasourceList()
+  res.data.map((item) => {
+    datasourceOptions.value.push({ label: item.name, value: item.id })
+  })
+  currentDatasource.value =
+    parseInt(TreeUtil.parseDatasourceId(props.sourceNode?.key)) || res.data[0].id
+  // 获取当前数据源下的所有数据库
+  if (currentDatasource.value) {
+    const res = await fetchDatabaseList(currentDatasource.value)
+    currentDatabase.value = res.data[0]
+    databaseOptions.value = res.data.map((item) => {
+      return { label: item, value: item }
+    })
+  }
 
   // 注册自定义关键字提示
   monaco.languages.registerCompletionItemProvider('sql', {
@@ -124,11 +145,7 @@ onMounted(async () => {
 
 // 当前数据源
 const currentDatasource = ref(null)
-const datasourceOptions = ref([
-  { label: 'gbase@localhost', value: 'gbase' },
-  { label: 'mysql@2.4.32.123', value: 'ds-1' },
-  { label: 'sqlite@32.234.54.1', value: 'gdom' },
-])
+const datasourceOptions = ref([])
 function renderDatasourceLabel(option) {
   return h(
     'div',
