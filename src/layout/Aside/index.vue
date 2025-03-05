@@ -28,7 +28,6 @@ const loading = ref(false)
 watch(
   () => treeStore.flag,
   async () => {
-    // await initTree()
     // 添加节点
     const { targetNode, opType, parentKey, oldNode } = treeStore
     switch (opType) {
@@ -275,7 +274,6 @@ const handleLoad = async (node) => {
 .tree {
   width: 100%;
   max-width: 100%;
-  //height: 100%;
   overflow: auto;
 }
 :deep(.n-tree-node-indent) {
