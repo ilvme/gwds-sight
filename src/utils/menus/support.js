@@ -19,6 +19,17 @@ const TreeUtil = {
     const arr = key.split('-')
     return 'ds-' + arr[arr.length - 1]
   },
+  /**
+   * 从 key 中解析出数据库名称
+   * @param key
+   * @returns {*}
+   */
+  parseDatabaseName(key) {
+    if (!key) return
+    if (key.startsWith('ds-')) return
+    const arr = key.split('-')
+    return arr[arr.length - 2]
+  },
 }
 
 export default TreeUtil

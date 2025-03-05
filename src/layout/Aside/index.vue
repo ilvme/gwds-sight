@@ -13,6 +13,7 @@ import DatasourceRemover from '@/views/datasource/remove.vue'
 import { OP_TYPE_LIST, treeStore } from '@/layout/Aside/useTree.js'
 import DatabaseCreator from '@/views/database/create.vue'
 import DatabaseRemover from '@/views/database/remove.vue'
+import TableRename from '@/views/table/rename.vue'
 
 // const data = ref(treeData)
 // 当移除或增加节点时恢复原展开节点状态
@@ -29,7 +30,7 @@ watch(
   async () => {
     // await initTree()
     // 添加节点
-    const { targetNode, opType, parentKey } = treeStore
+    const { targetNode, opType, parentKey, oldNode } = treeStore
     switch (opType) {
       case OP_TYPE_LIST.ADD: // 添加节点
         targetNode.prefix = renderIcon(getTreeIconByNodeType(targetNode.nodeType))
@@ -37,6 +38,12 @@ watch(
         break
       case OP_TYPE_LIST.REMOVE: // 删除节点
         removeNodeFromTree(data.value, targetNode.key)
+        break
+      case OP_TYPE_LIST.RENAME: // 重命名节点
+        removeNodeFromTree(data.value, oldNode.key)
+
+        targetNode.prefix = renderIcon(getTreeIconByNodeType(targetNode.nodeType))
+        addNodeToTree(data.value, parentKey, targetNode)
         break
     }
   },
@@ -103,6 +110,8 @@ const showDropdown = ref(false)
 const { addTab } = useTabStore()
 
 const tableCreatorAndEditorRef = useTemplateRef('tableCreatorAndEditorRef')
+const tableRenameRef = useTemplateRef('tableRenameRef')
+
 const databaseCreatorRef = useTemplateRef('databaseCreatorRef')
 const databaseRemoverRef = useTemplateRef('databaseRemoverRef')
 const datasourceCreatorRef = useTemplateRef('datasourceCreatorRef')
@@ -120,7 +129,11 @@ const handleSelect = (key) => {
 
     // 表创建
     case 'TABLE_CREATE':
-      tableCreatorAndEditorRef.value.openModal()
+      tableCreatorAndEditorRef.value.openModal(currentClickNode.value)
+      break
+    // 表重命名
+    case 'TABLE_RENAME':
+      tableRenameRef.value.openModal(currentClickNode.value)
       break
 
     // 数据源创建
@@ -239,6 +252,9 @@ const handleLoad = async (node) => {
 
       <!-- 创建表 -->
       <TableCreatorAndEditor ref="tableCreatorAndEditorRef" />
+
+      <!-- 表重命名 -->
+      <TableRename ref="tableRenameRef" />
 
       <!-- 创建数据源 -->
       <DatasourceCreator ref="datasourceCreatorRef" />

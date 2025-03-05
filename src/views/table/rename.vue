@@ -30,14 +30,13 @@ const onSave = (e) => {
 
   formRef.value?.validate(async (errors) => {
     if (!errors) {
-      const res = await renameTable({
+      await renameTable({
         datasourceId: TreeUtil.parseDatasourceId(currentNode.value.key),
         databaseName: TreeUtil.parseDatabaseName(currentNode.value.key),
 
         oldTableName: table.value.oldTableName,
         tableName: table.value.newTableName,
       })
-      console.log('sss', res)
 
       // 刷新树
       const newNode = {
