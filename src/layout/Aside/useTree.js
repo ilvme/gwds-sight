@@ -7,6 +7,7 @@ export const OP_TYPE_LIST = {
   RENAME: 'RENAME',
 }
 
+// TODO 优化参数设计，化繁为简
 export const treeStore = reactive({
   flag: false,
 
