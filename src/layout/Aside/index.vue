@@ -218,7 +218,7 @@ const handleLoad = async (node) => {
 
 <template>
   <aside style="height: calc(100vh - 60px)">
-    <n-scrollbar style="max-height: 100%" x-scrollable>
+    <n-scrollbar style="max-height: 100%; padding: 2px 0 10px 0" x-scrollable>
       <n-spin size="small" :show="loading" :delay="500">
         <template #description> 拼命加载中... </template>
         <n-tree
