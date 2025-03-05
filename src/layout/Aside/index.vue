@@ -50,7 +50,6 @@ watch(
 )
 
 onMounted(async () => {
-  console.log('initTree...')
   await initTree()
 })
 
@@ -207,7 +206,6 @@ function clickOutside() {
 
 // 懒加载
 const handleLoad = async (node) => {
-  console.log('load', node.key)
   // 将 node.key 按照 - 切割
   const arr = node.key.split('-')
   const { data } = await fetchTree(arr[arr.length - 1], node)
