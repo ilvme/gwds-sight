@@ -217,55 +217,57 @@ const handleLoad = async (node) => {
 </script>
 
 <template>
-  <aside style="height: calc(100vh - 50px)">
-    <n-spin size="small" :show="loading" :delay="500">
-      <template #description> 拼命加载中... </template>
-      <n-tree
-        v-if="loading === false"
-        class="tree"
-        @load="handleLoad"
-        check-strategy="child"
-        show-line
-        :data="data"
-        :node-props="nodeProps"
-        :default-expanded-keys="defaultExpandKeys"
-        @update-expanded-keys="handleUpdateExpandKeys"
-      >
-        <template #empty>
-          <n-empty description="请先新建一个数据源吧" />
-        </template>
-      </n-tree>
-      <!-- 树右键菜单 -->
-      <n-dropdown
-        size="small"
-        trigger="manual"
-        placement="bottom-start"
-        :show="showDropdown"
-        :options="rightOptions"
-        :x="xRef"
-        :y="yRef"
-        @select="handleSelect"
-        @clickoutside="clickOutside"
-      />
+  <aside style="height: calc(100vh - 60px)">
+    <n-scrollbar style="max-height: 100%" x-scrollable>
+      <n-spin size="small" :show="loading" :delay="500">
+        <template #description> 拼命加载中... </template>
+        <n-tree
+          v-if="loading === false"
+          class="tree"
+          @load="handleLoad"
+          check-strategy="child"
+          show-line
+          :data="data"
+          :node-props="nodeProps"
+          :default-expanded-keys="defaultExpandKeys"
+          @update-expanded-keys="handleUpdateExpandKeys"
+        >
+          <template #empty>
+            <n-empty description="请先新建一个数据源吧" />
+          </template>
+        </n-tree>
+        <!-- 树右键菜单 -->
+        <n-dropdown
+          size="small"
+          trigger="manual"
+          placement="bottom-start"
+          :show="showDropdown"
+          :options="rightOptions"
+          :x="xRef"
+          :y="yRef"
+          @select="handleSelect"
+          @clickoutside="clickOutside"
+        />
 
-      <!-- 创建表 -->
-      <TableCreatorAndEditor ref="tableCreatorAndEditorRef" />
+        <!-- 创建表 -->
+        <TableCreatorAndEditor ref="tableCreatorAndEditorRef" />
 
-      <!-- 表重命名 -->
-      <TableRename ref="tableRenameRef" />
+        <!-- 表重命名 -->
+        <TableRename ref="tableRenameRef" />
 
-      <!-- 创建数据源 -->
-      <DatasourceCreator ref="datasourceCreatorRef" />
+        <!-- 创建数据源 -->
+        <DatasourceCreator ref="datasourceCreatorRef" />
 
-      <!-- 移除数据源 -->
-      <DatasourceRemover ref="datasourceRemoverRef" />
+        <!-- 移除数据源 -->
+        <DatasourceRemover ref="datasourceRemoverRef" />
 
-      <!-- 创建数据库 -->
-      <DatabaseCreator ref="databaseCreatorRef" />
+        <!-- 创建数据库 -->
+        <DatabaseCreator ref="databaseCreatorRef" />
 
-      <!-- 删除数据库 -->
-      <DatabaseRemover ref="databaseRemoverRef" />
-    </n-spin>
+        <!-- 删除数据库 -->
+        <DatabaseRemover ref="databaseRemoverRef" />
+      </n-spin>
+    </n-scrollbar>
   </aside>
 </template>
 
@@ -273,7 +275,7 @@ const handleLoad = async (node) => {
 .tree {
   width: 100%;
   max-width: 100%;
-  height: 100%;
+  //height: 100%;
   overflow: auto;
 }
 :deep(.n-tree-node-indent) {
@@ -289,9 +291,9 @@ const handleLoad = async (node) => {
   margin-right: 5px;
 }
 
-/*:deep(
+:deep(
     .n-tree .n-tree-node:not(.n-tree-node--disabled).n-tree-node--clickable .n-tree-node-content
   ) {
   white-space: nowrap;
-}*/
+}
 </style>
