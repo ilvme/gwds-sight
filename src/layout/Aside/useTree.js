@@ -29,4 +29,12 @@ export const treeStore = reactive({
     this.parentKey = parentKey
     this.flag = !this.flag
   },
+
+  // 初始化数据
+  init() {
+    this.opType = null
+    this.targetNode = null
+    this.oldNode = null
+    this.parentKey = null
+  },
 })

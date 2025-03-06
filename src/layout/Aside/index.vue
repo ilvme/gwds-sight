@@ -34,16 +34,21 @@ watch(
       case OP_TYPE_LIST.ADD: // 添加节点
         targetNode.prefix = renderIcon(getTreeIconByNodeType(targetNode.nodeType))
         addNodeToTree(data.value, parentKey, targetNode)
+        treeStore.init()
         break
       case OP_TYPE_LIST.REMOVE: // 删除节点
         removeNodeFromTree(data.value, targetNode.key)
+        treeStore.init()
         break
       case OP_TYPE_LIST.RENAME: // 重命名节点
         removeNodeFromTree(data.value, oldNode.key)
 
         targetNode.prefix = renderIcon(getTreeIconByNodeType(targetNode.nodeType))
         addNodeToTree(data.value, parentKey, targetNode)
+        treeStore.init()
         break
+      default:
+        treeStore.init()
     }
   },
 )
