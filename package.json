@@ -15,7 +15,11 @@
     "@vueuse/components": "^11.3.0",
     "@vueuse/core": "^11.3.0",
     "axios": "^1.7.9",
+    "chart.js": "^4.4.8",
+    "core-js": "^3.41.0",
+    "cron": "^4.1.0",
     "crypto-js": "^4.2.0",
+    "dayjs": "^1.11.13",
     "highlight.js": "^11.10.0",
     "lodash-es": "^4.17.21",
     "monaco-editor": "^0.52.0",
@@ -23,6 +27,8 @@
     "pinia": "^2.2.6",
     "sql-formatter": "^15.4.6",
     "tailwindcss": "^4.0.10",
+    "uuid": "^11.1.0",
+    "validator": "^13.12.0",
     "vue": "^3.5.12"
   },
   "devDependencies": {
