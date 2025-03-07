@@ -1,20 +1,16 @@
 <script setup>
 import Layout from '@/layout/index.vue'
-import { dateZhCN, zhCN } from 'naive-ui'
+import { darkTheme, dateZhCN, useOsTheme, zhCN } from 'naive-ui'
+import { computed } from 'vue'
 
-// TODO 优化
-const themeOverrides = {
-  common: {
-    primaryColor: '#2080f0',
-    primaryColorHover: '#2080f0',
-    primaryColorPressed: '#2080f0',
-    primaryColorSuppl: '#2080f0',
-  },
-}
+const osTheme = useOsTheme()
+const theme = computed(() => (osTheme.value === 'dark' ? darkTheme : undefined))
 </script>
 
 <template>
-  <n-config-provider :theme-overrides="themeOverrides" :locale="zhCN" :date-locale="dateZhCN">
+  <n-config-provider :theme="theme" :locale="zhCN" :date-locale="dateZhCN">
+    <n-global-style />
+
     <n-notification-provider>
       <n-message-provider>
         <Layout />

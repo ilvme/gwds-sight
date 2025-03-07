@@ -25,10 +25,6 @@ window.$notification = useNotification()
       <template #2>
         <Main />
       </template>
-
-      <template #resize-trigger>
-        <div style="height: 100%; background-color: #e3e1e1; width: 1px" />
-      </template>
     </n-split>
   </main>
 </template>

@@ -112,6 +112,7 @@ onMounted(async () => {
       horizontalScrollbarSize: 8,
       arrowSize: 0,
     },
+    theme: 'vs-dark',
   })
 
   // 添加右键菜单
@@ -285,17 +286,7 @@ function formatSQL() {
     </n-flex>
 
     <!-- 核心编辑器区域 -->
-    <div
-      ref="editorRef"
-      :id="`editor_container_` + keyId"
-      style="
-        border: 1px #e4e4e4 solid;
-        height: 100%;
-        margin-bottom: -1px;
-        margin-left: -1px;
-        padding: 5px 0;
-      "
-    />
+    <div ref="editorRef" :id="`editor_container_` + keyId" style="height: 100%; padding: 5px 0" />
   </main>
 </template>
 

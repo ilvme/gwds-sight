@@ -1,6 +1,6 @@
 <script setup>
 import SQLEditor from '@/views/sql-console/SQLEditor.vue'
-import { ref, useId } from 'vue'
+import { ref } from 'vue'
 import { useTabStore } from '@/stores/tab.js'
 import { storeToRefs } from 'pinia'
 
@@ -22,7 +22,7 @@ console.log(initSourceNode.value)
     default-size="360px"
   >
     <template #1>
-      <SQLEditor ref="sqlEditorRef" :key="useId()" :sourceNode="initSourceNode" />
+      <SQLEditor ref="sqlEditorRef" :sourceNode="initSourceNode" />
     </template>
     <template #2>
       <n-tabs default-value="1" style="padding-left: 10px">
@@ -32,10 +32,6 @@ console.log(initSourceNode.value)
           <n-empty description="没有任何数据" />
         </n-tab-pane>
       </n-tabs>
-    </template>
-
-    <template #resize-trigger>
-      <div style="height: 1px; background-color: #e3e1e1; width: 100%" />
     </template>
   </n-split>
 </template>
