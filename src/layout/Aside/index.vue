@@ -222,7 +222,7 @@ const handleLoad = async (node) => {
 
 <template>
   <aside style="height: calc(100vh - 60px)">
-    <n-scrollbar style="max-height: 100%; padding: 2px 0 10px 0" x-scrollable>
+    <n-scrollbar style="max-height: 100%; padding: 0 0 10px 0" x-scrollable>
       <n-spin size="small" :show="loading" :delay="500">
         <template #description> 拼命加载中... </template>
         <n-tree
@@ -280,18 +280,19 @@ const handleLoad = async (node) => {
   width: 100%;
   max-width: 100%;
   overflow: auto;
+  font-size: 16px;
 }
 :deep(.n-tree-node-indent) {
-  width: 18px;
+  width: 16px;
 }
 :deep(.n-tree .n-tree-node-content) {
-  padding: 2px;
+  padding: 1px;
 }
 :deep(.n-tree .n-tree-node-wrapper) {
-  padding: 1px 0;
+  padding: 0;
 }
 :deep(.n-tree .n-tree-node-content .n-tree-node-content__prefix) {
-  margin-right: 5px;
+  margin-right: 3px;
 }
 
 :deep(

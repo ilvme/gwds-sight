@@ -101,13 +101,13 @@ const langText = computed(() => {
     <!-- 创建数据源 -->
     <DatasourceCreator ref="datasourceCreatorRef" />
   </header>
+
+  <n-divider style="margin: 0" />
 </template>
 
 <style scoped>
 .header {
   height: 50px;
-  background-color: #2c2c2c;
-  color: white;
   display: flex;
   justify-content: space-between;
   align-items: center;
